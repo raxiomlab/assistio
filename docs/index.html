@@ -1705,6 +1705,9 @@ function buildStars(){
   size();
   window.addEventListener("resize", size);
   (function loop(){
+    // RAF agendado antes do desenho: um erro em um frame nao pode congelar o
+    // fundo animado (mesmo padrao de petLoop).
+    requestAnimationFrame(loop);
     ctx.clearRect(0, 0, w, h);
     for (var i = 0; i < dots.length; i++){
       var d = dots[i];
@@ -1723,7 +1726,6 @@ function buildStars(){
         }
       }
     }
-    requestAnimationFrame(loop);
   })();
 }
 
@@ -2132,10 +2134,16 @@ function petDrawTexture(){
     petCtx.globalAlpha=1; petCtx.restore();
   } else if (petTex==="holo"){
     petCtx.save(); petCtx.globalCompositeOperation="overlay";
-    var hp=(petTime*.16)%1, hg=petCtx.createLinearGradient(-PET_R*.9,-PET_R*.9,PET_R*.9,PET_R*.9);
-    hg.addColorStop(Math.max(0,hp-.18),"rgba(255,255,255,0)");
-    hg.addColorStop(hp,"rgba(255,255,255,.42)");
-    hg.addColorStop(Math.min(1,hp+.18),"rgba(255,255,255,0)");
+    var hp=(petTime*.16)%1;
+    // % em JS devolve valor com sinal: o gradiente pode chegar negativo logo no
+    // primeiro frame (hp ~ -0.0004), e addColorStop exige 0..1. Sem o clamp o
+    // IndexSizeError derrubava petRender -> o RAF nao era reagendado e a
+    // animacao morria de vez (falha intermitente na 1a visita).
+    hp=hp<0?hp+1:hp;
+    var hg=petCtx.createLinearGradient(-PET_R*.9,-PET_R*.9,PET_R*.9,PET_R*.9);
+    hg.addColorStop(Math.max(0,Math.min(1,hp-.18)),"rgba(255,255,255,0)");
+    hg.addColorStop(Math.max(0,Math.min(1,hp)),"rgba(255,255,255,.42)");
+    hg.addColorStop(Math.max(0,Math.min(1,hp+.18)),"rgba(255,255,255,0)");
     petCtx.fillStyle=hg; petCtx.fillRect(-PET_R*1.2,-PET_R*1.2,PET_R*2.4,PET_R*2.4);
     petCtx.globalAlpha=.18; petCtx.fillStyle="rgba("+ch.glow+",1)"; petCtx.fillRect(-PET_R*1.2,-PET_R*1.2,PET_R*2.4,PET_R*2.4);
     petCtx.globalAlpha=1; petCtx.restore();
@@ -2927,12 +2935,16 @@ function petKonami(e){
 }
 
 /* ---- loop / init ---- */
-var petLastMs=0;
+var petLastMs=0, petWarned=false;
 function petLoop(now){
   var dt=Math.min((now-petLastMs)/1000,.05); petLastMs=now;
   petFast = petTime<petFastUntil;
-  petUpdate(dt); petRender();
+  // Agenda o proximo frame ANTES do trabalho: um erro isolado de desenho (ex.
+  // gradiente fora de faixa) nao pode matar a animacao, porque o RAF ja esta
+  // na fila. Mantem o bichinho vivo mesmo quando um frame falha.
   petRAF=requestAnimationFrame(petLoop);
+  try { petUpdate(dt); petRender(); }
+  catch(err){ if(!petWarned){ petWarned=true; console.warn("[pet] frame error",err); } }
 }
 function petScaleFor(){ return petW<560?.6:petW<820?.72:petW<1100?.82:.9; }
 function petResize(){
