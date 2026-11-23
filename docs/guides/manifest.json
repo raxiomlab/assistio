@@ -1,0 +1,42 @@
+{
+  "title": "AssistIO Documentation",
+  "updated": "2026",
+  "sections": [
+    {
+      "id": "start",
+      "title": { "en": "Getting started", "pt": "Começando" },
+      "items": [
+        { "file": "what-is-assistio.md", "title": { "en": "What is AssistIO?", "pt": "O que é o AssistIO?" } },
+        { "file": "getting-started.md", "title": { "en": "Install & first run", "pt": "Instalação e primeiro uso" } },
+        { "file": "platforms.md", "title": { "en": "Desktop, Web & Android", "pt": "Desktop, Web e Android" } }
+      ]
+    },
+    {
+      "id": "use",
+      "title": { "en": "Using AssistIO", "pt": "Usando o AssistIO" },
+      "items": [
+        { "file": "features.md", "title": { "en": "Features overview", "pt": "Visão geral dos recursos" } },
+        { "file": "tasks-and-kanban.md", "title": { "en": "Tasks & Kanban", "pt": "Tarefas e Kanban" } },
+        { "file": "memory.md", "title": { "en": "Memory & knowledge", "pt": "Memória e conhecimento" } },
+        { "file": "tools-and-plugins.md", "title": { "en": "Tools, MCP & plugins", "pt": "Ferramentas, MCP e plugins" } }
+      ]
+    },
+    {
+      "id": "trust",
+      "title": { "en": "Trust & privacy", "pt": "Confiança e privacidade" },
+      "items": [
+        { "file": "privacy-and-security.md", "title": { "en": "Privacy & security", "pt": "Privacidade e segurança" } },
+        { "file": "tool-approvals.md", "title": { "en": "Tool approvals", "pt": "Aprovação de ferramentas" } },
+        { "file": "license.md", "title": { "en": "License", "pt": "Licença" } }
+      ]
+    },
+    {
+      "id": "reference",
+      "title": { "en": "Reference", "pt": "Referência" },
+      "items": [
+        { "file": "keyboard-and-appearance.md", "title": { "en": "Keyboard & appearance", "pt": "Teclado e aparência" } },
+        { "file": "faq.md", "title": { "en": "FAQ", "pt": "Perguntas frequentes" } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="AssistIO documentation: install, features, privacy, tools and reference.">
+<meta name="theme-color" content="#04060f">
+<title>AssistIO - Documentation</title>
+<!--
+  ASSISTIO - documentation viewer (single file, 100% offline)
+  Reads docs/guides/manifest.json (curated order) and the Markdown files
+  it points to, same-origin. To add a page: drop a .md in guides/ and add
+  one entry to manifest.json. No HTML editing, no build step, no CDN.
+-->
+<style>
+  :root{
+    --bg:#04060f; --bg-2:#070b17;
+    --panel:rgba(255,255,255,.035); --panel-2:rgba(255,255,255,.06);
+    --line:rgba(148,163,184,.15); --line-2:rgba(148,163,184,.3);
+    --txt:#e8eef9; --muted:#8ba0c2; --muted-2:#6b7f9e;
+    --a1:#7dd3fc; --a2:#a78bfa; --a3:#34d399; --a4:#f0abfc;
+    --warn:#fbbf24; --danger:#fb7185;
+    --radius:18px; --radius-sm:12px;
+    --shadow:0 30px 70px -30px rgba(0,0,0,.9);
+    --max:1280px; --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0 }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100% }
+  body{
+    background:var(--bg); color:var(--txt); line-height:1.65;
+    font-family:"Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  a{ color:var(--a1); text-decoration:none }
+  a:hover{ text-decoration:underline }
+  button{ font:inherit; color:inherit }
+  ::selection{ background:rgba(125,211,252,.3) }
+  :focus-visible{ outline:2px solid var(--a1); outline-offset:3px; border-radius:8px }
+
+  /* header */
+  header{ position:fixed; top:0; left:0; right:0; z-index:60; height:64px; display:flex; align-items:center;
+    background:rgba(5,7,15,.72); backdrop-filter:blur(18px) saturate(140%); border-bottom:1px solid var(--line) }
+  .hwrap{ width:100%; max-width:var(--max); margin-inline:auto; padding-inline:22px; display:flex; align-items:center; gap:16px }
+  .brand{ display:flex; align-items:center; gap:11px; font-weight:750; letter-spacing:-.02em; font-size:16px; color:var(--txt) }
+  .brand:hover{ text-decoration:none }
+  .mark{ width:30px; height:30px; border-radius:9px; flex:none; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--a1),var(--a2)); color:#04121c; font-weight:850; font-size:15px;
+    box-shadow:0 10px 24px -10px rgba(125,211,252,.95) }
+  .hTitle{ color:var(--muted); font-size:14px; font-weight:600; margin-left:2px }
+  .hRight{ margin-left:auto; display:flex; align-items:center; gap:10px }
+  .lang{ display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; background:var(--panel) }
+  .lang button{ background:transparent; border:0; cursor:pointer; padding:6px 12px; font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--muted-2); transition:color .15s, background .15s }
+  .lang button.on{ color:#04121c; background:linear-gradient(120deg,var(--a1),#c4b5fd) }
+  .hBtn{ font-size:13px; font-weight:600; color:var(--muted); padding:8px 14px; border:1px solid var(--line); border-radius:10px; background:var(--panel) }
+  .hBtn:hover{ color:var(--txt); text-decoration:none; background:var(--panel-2) }
+  .menuBtn{ display:none; width:40px; height:40px; border-radius:11px; cursor:pointer; background:var(--panel-2); border:1px solid var(--line-2); place-items:center }
+  .menuBtn svg{ width:20px; height:20px }
+
+  /* layout */
+  .shell{ max-width:var(--max); margin:64px auto 0; padding:0 22px; display:grid; grid-template-columns:280px 1fr; gap:38px; align-items:start }
+
+  /* sidebar */
+  nav.side{ position:sticky; top:84px; max-height:calc(100vh - 104px); overflow-y:auto; padding:26px 6px 40px 0 }
+  nav.side::-webkit-scrollbar{ width:9px } nav.side::-webkit-scrollbar-thumb{ background:var(--line); border-radius:9px }
+  .grp{ margin-bottom:22px }
+  .grp>h4{ font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--muted-2); margin-bottom:9px; padding-left:12px }
+  .nav-item{ display:block; color:var(--muted); font-size:14px; padding:8px 12px; border-radius:9px; border-left:2px solid transparent; transition:color .15s, background .15s, border-color .15s }
+  .nav-item:hover{ color:var(--txt); background:var(--panel); text-decoration:none }
+  .nav-item.on{ color:var(--txt); background:linear-gradient(90deg,rgba(125,211,252,.12),transparent); border-left-color:var(--a1); font-weight:600 }
+
+  /* article */
+  main{ min-width:0; padding:30px 0 90px }
+  .crumb{ font-size:12.5px; color:var(--muted-2); margin-bottom:14px; letter-spacing:.02em }
+  .crumb b{ color:var(--muted) }
+  article.prose{ max-width:78ch }
+  article.prose h1{ font-size:clamp(1.9rem,4.2vw,2.7rem); line-height:1.08; letter-spacing:-.03em; font-weight:780; margin-bottom:6px }
+  article.prose h2{ font-size:1.5rem; letter-spacing:-.02em; font-weight:720; margin:38px 0 12px; padding-top:6px }
+  article.prose h3{ font-size:1.16rem; letter-spacing:-.01em; font-weight:680; margin:26px 0 8px }
+  article.prose p{ color:#cdd8ea; margin:14px 0 }
+  article.prose ul,article.prose ol{ margin:14px 0 14px 4px; padding-left:22px; color:#cdd8ea }
+  article.prose li{ margin:7px 0 }
+  article.prose li::marker{ color:var(--a1) }
+  article.prose strong{ color:#fff; font-weight:680 }
+  article.prose em{ color:#dbe4f2 }
+  article.prose hr{ border:0; border-top:1px solid var(--line); margin:30px 0 }
+  article.prose a{ border-bottom:1px solid rgba(125,211,252,.35) }
+  article.prose code{ font-family:ui-monospace,"Cascadia Code",Consolas,monospace; font-size:.88em; background:rgba(125,211,252,.1); border:1px solid rgba(125,211,252,.2); border-radius:6px; padding:1px 6px; color:#bae6fd }
+  article.prose pre{ background:rgba(8,12,24,.72); border:1px solid var(--line); border-radius:14px; padding:16px 18px; overflow-x:auto; margin:16px 0 }
+  article.prose pre code{ background:transparent; border:0; padding:0; color:#d7e2f2; font-size:13px; line-height:1.6 }
+  article.prose blockquote{ border-left:3px solid var(--a2); background:rgba(167,139,250,.07); border-radius:0 12px 12px 0; padding:12px 18px; margin:18px 0 }
+  article.prose blockquote p{ margin:6px 0; color:#d7def0 }
+  article.prose table{ width:100%; border-collapse:collapse; margin:18px 0; font-size:14px; border:1px solid var(--line); border-radius:12px; overflow:hidden }
+  article.prose th,article.prose td{ text-align:left; padding:11px 14px; border-bottom:1px solid var(--line) }
+  article.prose th{ background:rgba(255,255,255,.03); color:var(--txt); font-weight:680; font-size:12.5px; letter-spacing:.02em }
+  article.prose td{ color:#c7d2e5 }
+  article.prose tr:last-child td{ border-bottom:0 }
+
+  .state{ color:var(--muted); padding:60px 0 }
+  .pager{ display:flex; gap:14px; justify-content:space-between; margin-top:56px; max-width:78ch }
+  .pager a{ flex:1; border:1px solid var(--line); border-radius:14px; padding:15px 18px; background:var(--panel); transition:border-color .2s, background .2s }
+  .pager a:hover{ text-decoration:none; border-color:var(--line-2); background:var(--panel-2) }
+  .pager .lbl{ display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-2); margin-bottom:5px }
+  .pager .ttl{ color:var(--txt); font-size:14.5px; font-weight:600 }
+  .pager .next{ text-align:right }
+  .pager .only{ visibility:hidden }
+
+  footer{ border-top:1px solid var(--line); margin-top:30px; padding:34px 22px }
+  .fwrap{ max-width:var(--max); margin-inline:auto; display:flex; gap:18px; flex-wrap:wrap; align-items:center; justify-content:space-between; font-size:13px; color:var(--muted-2) }
+  .fwrap nav{ display:flex; gap:20px; flex-wrap:wrap } .fwrap a{ color:var(--muted-2) } .fwrap a:hover{ color:var(--txt) }
+
+  .scrim{ display:none; position:fixed; inset:64px 0 0; background:rgba(2,4,10,.6); z-index:48; backdrop-filter:blur(2px) }
+  @media (max-width:940px){
+    .shell{ grid-template-columns:1fr; gap:0 }
+    .menuBtn{ display:grid }
+    .hTitle{ display:none }
+    nav.side{ position:fixed; top:64px; left:0; bottom:0; width:min(300px,84vw); background:var(--bg-2); border-right:1px solid var(--line); padding:22px 14px 40px; z-index:50; transform:translateX(-100%); transition:transform .28s var(--ease) }
+    body.navopen nav.side{ transform:none } body.navopen .scrim{ display:block }
+    main{ padding-top:22px }
+  }
+  @media (prefers-reduced-motion:reduce){ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important } }
+</style>
+</head>
+<body>
+<header>
+  <div class="hwrap">
+    <button class="menuBtn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="brand" href="./"><span class="mark">IO</span><span>AssistIO</span></a>
+    <span class="hTitle">Documentation</span>
+    <div class="hRight">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="on">EN</button>
+        <button type="button" data-lang="pt">PT</button>
+      </div>
+      <a class="hBtn" href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener">Releases</a>
+    </div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+  <nav class="side" id="side" aria-label="Documentation"><div class="state">Loading…</div></nav>
+  <main>
+    <div class="crumb" id="crumb"></div>
+    <article class="prose" id="article"><div class="state">Loading…</div></article>
+    <div class="pager" id="pager"></div>
+  </main>
+</div>
+
+<footer>
+  <div class="fwrap">
+    <span>© 2026 Rodrigo — RaxiomLab</span>
+    <nav>
+      <a href="./" data-chrome="home">Home</a>
+      <a href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener" data-chrome="releases">Releases</a>
+      <a href="https://github.com/raxiomlab/assistio/blob/main/LICENSE" target="_blank" rel="noopener" data-chrome="license">License</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var BASE = "guides/";
+  var state = { lang: "en", manifest: null, order: [] };
+
+  // ---- language chrome (labels only; doc bodies render as authored) ----
+  var CHROME = {
+    en:{ home:"Home", releases:"Releases", license:"License", toc:"Contents",
+         prev:"Previous", next:"Next", notFound:"Page not found.",
+         loadErr:"Could not load this page. It may have been moved." },
+    pt:{ home:"Início", releases:"Lançamentos", license:"Licença", toc:"Conteúdo",
+         prev:"Anterior", next:"Próximo", notFound:"Página não encontrada.",
+         loadErr:"Não foi possível carregar esta página. Ela pode ter sido movida." }
+  };
+  function t(k){ return (CHROME[state.lang] && CHROME[state.lang][k]) || CHROME.en[k] || k; }
+  function pick(obj){ return (obj && (obj[state.lang] != null ? obj[state.lang] : obj.en)) || ""; }
+
+  // ---- markdown -> html (small, safe renderer; HTML is escaped first) ----
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function inline(s){
+    // images then links then emphasis / code, operating on already-escaped text
+    s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, function(_,alt,src){
+      return '<img src="'+attr(src)+'" alt="'+alt+'" style="max-width:100%;border-radius:12px;border:1px solid var(--line)">';
+    });
+    s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function(_,txt,href){
+      return link(href, txt);
+    });
+    s = s.replace(/`([^`]+)`/g, function(_,c){ return "<code>"+c+"</code>"; });
+    s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+    s = s.replace(/_([^_\n]+)_/g, "<em>$1</em>");
+    return s;
+  }
+  function attr(u){ return u.replace(/"/g,"%22"); }
+  function link(href, txt){
+    // .md -> route to viewer; #anchors keep; absolute -> new tab
+    if(/\.md(#.*)?$/.test(href) && !/^[a-z]+:\/\//i.test(href)){
+      var f = href.replace(/\.md/,"").replace(/^.*\//,"").trim();
+      return '<a href="?file='+encodeURIComponent(f+'.md')+'">'+txt+'</a>';
+    }
+    if(/^[a-z]+:\/\//i.test(href)){
+      return '<a href="'+attr(href)+'" target="_blank" rel="noopener">'+txt+'</a>';
+    }
+    return '<a href="'+attr(href)+'">'+txt+'</a>';
+  }
+  function mdToHtml(md){
+    // protect fenced code blocks
+    var fences = [];
+    md = md.replace(/```([^\n]*)\n([\s\S]*?)```/g, function(_,lang,body){
+      fences.push('<pre><code>'+esc(body.replace(/\n$/,""))+'</code></pre>');
+      return "\u0000FENCE"+(fences.length-1)+"\u0000";
+    });
+    var lines = md.split(/\r?\n/), out = [], i = 0;
+    function isTable(p){ return /\|/.test(lines[p]||"") && /^[\s|:\-]+$/.test(lines[p+1]||"") && /-/.test(lines[p+1]||""); }
+    while(i < lines.length){
+      var line = lines[i];
+      var fenceOnly = line.match(/^\u0000FENCE(\d+)\u0000$/);
+      if(fenceOnly){ out.push(fences[+fenceOnly[1]]); i++; continue; }
+      if(/^\s*$/.test(line)){ i++; continue; }
+      var h = line.match(/^(#{1,6})\s+(.*)$/);
+      if(h){ var lv=h[1].length; out.push("<h"+lv+">"+inline(esc(h[2]))+"</h"+lv+">"); i++; continue; }
+      if(/^(---|\*\*\*|___)\s*$/.test(line)){ out.push("<hr>"); i++; continue; }
+      if(/^>\s?/.test(line)){
+        var bq=[]; while(i<lines.length && /^>\s?/.test(lines[i])){ bq.push(lines[i].replace(/^>\s?/,"")); i++; }
+        out.push("<blockquote>"+mdToHtml(bq.join("\n"))+"</blockquote>"); continue;
+      }
+      if(isTable(i)){
+        var head = lines[i].split("|").map(trimCell).filter(function(c,ix,a){ return !(ix===0&&c==="")&&!(ix===a.length-1&&c===""); });
+        i += 2; var rows=[];
+        while(i<lines.length && /\|/.test(lines[i]) && !/^\s*$/.test(lines[i])){
+          var cells = lines[i].split("|").map(trimCell).filter(function(c,ix,a){ return !(ix===0&&c==="")&&!(ix===a.length-1&&c===""); });
+          rows.push(cells); i++;
+        }
+        var tbl = "<table><thead><tr>";
+        head.forEach(function(c){ tbl += "<th>"+inline(esc(c))+"</th>"; });
+        tbl += "</tr></thead><tbody>";
+        rows.forEach(function(r){ tbl += "<tr>"; for(var k=0;k<head.length;k++){ tbl += "<td>"+inline(esc(r[k]||""))+"</td>"; } tbl += "</tr>"; });
+        tbl += "</tbody></table>";
+        out.push(tbl); continue;
+      }
+      if(/^\s*([-*+])\s+/.test(line)){
+        var items=[]; while(i<lines.length && /^\s*([-*+])\s+/.test(lines[i])){ items.push(inline(esc(lines[i].replace(/^\s*([-*+])\s+/,"")))); i++; }
+        out.push("<ul>"+items.map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul>"); continue;
+      }
+      if(/^\s*\d+\.\s+/.test(line)){
+        var oitems=[]; while(i<lines.length && /^\s*\d+\.\s+/.test(lines[i])){ oitems.push(inline(esc(lines[i].replace(/^\s*\d+\.\s+/,"")))); i++; }
+        out.push("<ol>"+oitems.map(function(x){return "<li>"+x+"</li>";}).join("")+"</ol>"); continue;
+      }
+      // paragraph: gather until blank / block start
+      var para=[line]; i++;
+      while(i<lines.length && !/^\s*$/.test(lines[i]) && !/^(#{1,6}\s|>|```|\s*([-*+]|\d+\.)\s|\u0000FENCE|---|\*\*\*|___)/.test(lines[i])){ para.push(lines[i]); i++; }
+      out.push("<p>"+inline(esc(para.join(" ")))+"</p>");
+    }
+    return out.join("\n");
+  }
+  function trimCell(c){ return c.replace(/^\s+|\s+$/g,""); }
+
+  // ---- data loading ----
+  function loadManifest(){
+    return fetch(BASE+"manifest.json", { cache:"no-cache" }).then(function(r){
+      if(!r.ok) throw new Error("manifest "+r.status);
+      return r.json();
+    }).then(function(m){
+      state.manifest = m;
+      var idx = [];
+      (m.sections||[]).forEach(function(sec){
+        (sec.items||[]).forEach(function(it){ idx.push({ file:it.file, title:it.title, section:pick(sec.title) }); });
+      });
+      state.order = idx;
+      renderSidebar();
+    });
+  }
+
+  function renderSidebar(){
+    var side = document.getElementById("side"); side.innerHTML = "";
+    (state.manifest.sections||[]).forEach(function(sec){
+      var g = document.createElement("div"); g.className = "grp";
+      var h = document.createElement("h4"); h.textContent = pick(sec.title); g.appendChild(h);
+      (sec.items||[]).forEach(function(it){
+        var a = document.createElement("a"); a.className = "nav-item"; a.href = "?file="+encodeURIComponent(it.file);
+        a.textContent = pick(it.title); a.setAttribute("data-file", it.file); g.appendChild(a);
+      });
+      side.appendChild(g);
+    });
+  }
+  function markActive(file){
+    var items = document.querySelectorAll(".nav-item");
+    for(var i=0;i<items.length;i++){ items[i].classList.toggle("on", items[i].getAttribute("data-file")===file); }
+  }
+
+  function renderPager(pos){
+    var pager = document.getElementById("pager");
+    if(pos < 0){ pager.innerHTML = ""; return; }
+    var prev = state.order[pos-1], next = state.order[pos+1], html = "";
+    if(prev) html += '<a class="prev" href="?file='+encodeURIComponent(prev.file)+'"><span class="lbl">'+esc(t("prev"))+'</span><span class="ttl">'+esc(pick(prev.title))+'</span></a>';
+    else html += '<a class="prev only"><span class="lbl"></span><span class="ttl"></span></a>';
+    if(next) html += '<a class="next" href="?file='+encodeURIComponent(next.file)+'"><span class="lbl">'+esc(t("next"))+'</span><span class="ttl">'+esc(pick(next.title))+'</span></a>';
+    else html += '<a class="next only"><span class="lbl"></span><span class="ttl"></span></a>';
+    pager.innerHTML = html;
+  }
+
+  function findEntry(file){
+    for(var i=0;i<state.order.length;i++){ if(state.order[i].file===file) return { e:state.order[i], i:i }; }
+    return null;
+  }
+
+  function loadDoc(file){
+    var art = document.getElementById("article");
+    var entry = findEntry(file);
+    document.getElementById("crumb").innerHTML = entry ? "<b>"+esc(entry.e.section)+"</b>" : "";
+    art.innerHTML = '<div class="state">Loading…</div>';
+    markActive(file);
+    renderPager(entry ? entry.i : -1);
+    document.title = (entry?pick(entry.e.title):"Documentation") + " — AssistIO";
+    fetch(BASE+encodeURIComponent(file), { cache:"no-cache" }).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function(md){
+      var html = mdToHtml(md);
+      // first h1 -> drop, we render the title in crumb context; keep body
+      art.innerHTML = html;
+      window.scrollTo({ top:0, behavior:"instant" in window ? "instant" : "auto" });
+      document.getElementById("side").scrollTop = 0;
+    }).catch(function(){
+      art.innerHTML = '<div class="state">'+esc(t("loadErr"))+'</div>';
+    });
+  }
+
+  function currentFile(){
+    var q = new URLSearchParams(location.search).get("file");
+    if(q) return q;
+    return state.order.length ? state.order[0].file : null;
+  }
+
+  function route(){
+    if(!state.manifest) return;
+    var f = currentFile();
+    if(!f){ document.getElementById("article").innerHTML = '<div class="state">'+esc(t("notFound"))+'</div>'; return; }
+    if(!findEntry(f)){ loadDoc(f); return; } // allow unknown-but-existing files
+    loadDoc(f);
+  }
+
+  // ---- chrome language ----
+  function applyChromeLang(){
+    var map = { home:t("home"), releases:t("releases"), license:t("license") };
+    document.querySelectorAll("[data-chrome]").forEach(function(el){
+      var k = el.getAttribute("data-chrome"); if(map[k]) el.textContent = map[k];
+    });
+    // rebuild sidebar + current doc so bilingual titles refresh
+    renderSidebar();
+    var f = currentFile(); if(f) markActive(f);
+    document.querySelectorAll(".lang button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-lang")===state.lang); });
+    try{ localStorage.setItem("assistio-docs-lang", state.lang); }catch(e){}
+    // re-render current page content + pager in new lang
+    route();
+  }
+
+  function init(){
+    try{ var saved = localStorage.getItem("assistio-docs-lang"); if(saved==="en"||saved==="pt") state.lang = saved; }catch(e){}
+    document.querySelectorAll(".lang button").forEach(function(b){
+      b.addEventListener("click", function(){ state.lang = b.getAttribute("data-lang"); applyChromeLang(); });
+    });
+    var mb = document.getElementById("menuBtn"), sc = document.getElementById("scrim");
+    function closeNav(){ document.body.classList.remove("navopen"); mb.setAttribute("aria-expanded","false"); }
+    mb.addEventListener("click", function(){ var o=document.body.classList.toggle("navopen"); mb.setAttribute("aria-expanded", o?"true":"false"); });
+    sc.addEventListener("click", closeNav);
+    document.getElementById("side").addEventListener("click", function(e){ if(e.target.closest(".nav-item")) closeNav(); });
+
+    window.addEventListener("popstate", route);
+    document.addEventListener("click", function(e){
+      var a = e.target.closest && e.target.closest("a"); if(!a) return;
+      var href = a.getAttribute("href")||"";
+      if(href.indexOf("?file=")===0){ e.preventDefault(); history.pushState({}, "", href); route(); }
+    });
+
+    loadManifest().then(function(){ applyChromeLang(); }).catch(function(){
+      document.getElementById("side").innerHTML = '<div class="state">Could not load the index.</div>';
+    });
+  }
+  init();
+})();
+</script>
+</body>
+</html>
