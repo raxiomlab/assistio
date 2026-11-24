@@ -118,6 +118,10 @@
     body.navopen nav.side{ transform:none } body.navopen .scrim{ display:block }
     main{ padding-top:22px }
   }
+  @media (max-width:600px){
+    .hRight .hBtn{ display:none }
+    article.prose table{ display:block; overflow-x:auto; white-space:nowrap }
+  }
   @media (prefers-reduced-motion:reduce){ *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important } }
 </style>
 </head>
@@ -134,6 +138,7 @@
         <button type="button" data-lang="en" class="on">EN</button>
         <button type="button" data-lang="pt">PT</button>
       </div>
+      <a class="hBtn" href="store.html" data-chrome="store">Store</a>
       <a class="hBtn" href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener">Releases</a>
     </div>
   </div>
@@ -155,6 +160,7 @@
     <span>© 2026 Rodrigo — RaxiomLab</span>
     <nav>
       <a href="./" data-chrome="home">Home</a>
+      <a href="store.html" data-chrome="store">Store</a>
       <a href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener" data-chrome="releases">Releases</a>
       <a href="https://github.com/raxiomlab/assistio/blob/main/LICENSE" target="_blank" rel="noopener" data-chrome="license">License</a>
     </nav>
@@ -169,10 +175,10 @@
 
   // ---- language chrome (labels only; doc bodies render as authored) ----
   var CHROME = {
-    en:{ home:"Home", releases:"Releases", license:"License", toc:"Contents",
+    en:{ home:"Home", store:"Store", releases:"Releases", license:"License", toc:"Contents",
          prev:"Previous", next:"Next", notFound:"Page not found.",
          loadErr:"Could not load this page. It may have been moved." },
-    pt:{ home:"Início", releases:"Lançamentos", license:"Licença", toc:"Conteúdo",
+    pt:{ home:"Início", store:"Loja", releases:"Lançamentos", license:"Licença", toc:"Conteúdo",
          prev:"Anterior", next:"Próximo", notFound:"Página não encontrada.",
          loadErr:"Não foi possível carregar esta página. Ela pode ter sido movida." }
   };
@@ -346,7 +352,7 @@
 
   // ---- chrome language ----
   function applyChromeLang(){
-    var map = { home:t("home"), releases:t("releases"), license:t("license") };
+    var map = { home:t("home"), store:t("store"), releases:t("releases"), license:t("license") };
     document.querySelectorAll("[data-chrome]").forEach(function(el){
       var k = el.getAttribute("data-chrome"); if(map[k]) el.textContent = map[k];
     });

@@ -22,6 +22,13 @@
       ]
     },
     {
+      "id": "store",
+      "title": { "en": "Store", "pt": "Loja" },
+      "items": [
+        { "file": "store.md", "title": { "en": "Skills, extensions, apps & Forge", "pt": "Skills, extensões, apps e Forge" } }
+      ]
+    },
+    {
       "id": "trust",
       "title": { "en": "Trust & privacy", "pt": "Confiança e privacidade" },
       "items": [
