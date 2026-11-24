@@ -74,6 +74,30 @@ Your conversations stay in sync across every device you connect.
 - Command palette, keyboard shortcuts, themes, and a full appearance system
 - Your phone doubles as a remote companion for the desktop app
 
+## The Store
+
+Add capabilities without modifying the app. The store carries four kinds of
+resources:
+
+- **Skills** — instruction packs for a repeatable method.
+- **Extensions** — declarative commands, agent presets, prompts, settings and themes.
+- **Internal apps** — small local-first HTML apps that open inside AssistIO.
+- **Forge plugins** — declarative tools with explicit permissions.
+
+Every resource has a permalink. Clicking **Install** hands an `assistio://` deep
+link to the operating system; AssistIO verifies the manifest hash, shows the
+permissions and waits for your confirmation. The website never installs anything
+on its own.
+
+- Browse: [docs/store.html](docs/store.html)
+- Publish: [docs/store/README.md](docs/store/README.md) — one JSON manifest per
+  resource, validated and hashed by `node tools/store-build.mjs`.
+- Guide: [docs/guides/store.md](docs/guides/store.md)
+
+The same `docs/store/catalog.json` powers the website and the in-app store, so a
+resource is published once and appears in both. Store definitions are public;
+the AssistIO application source is not.
+
 ## Getting started
 
 1. **Install** AssistIO on your computer.
