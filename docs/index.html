@@ -132,9 +132,12 @@
   .lang button{ background:transparent; border:0; cursor:pointer; padding:6px 12px; font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--muted-2); transition:color .15s, background .15s }
   .lang button.on{ color:#04121c; background:linear-gradient(120deg,var(--a1),#c4b5fd) }
   .navCta{ margin-left:10px; padding:10px 18px }
+  .navLinks a.on{ color:var(--txt); background:var(--panel) }
+  .btn.store{ border-color:rgba(52,211,153,.38); background:rgba(52,211,153,.09); color:#d6fff0 }
+  .btn.store:hover{ background:rgba(52,211,153,.16); border-color:rgba(52,211,153,.55); box-shadow:0 16px 36px -18px rgba(52,211,153,.55) }
   .navToggle{ display:none; margin-left:auto; width:42px; height:40px; border-radius:11px; cursor:pointer; background:var(--panel-2); border:1px solid var(--line-2) }
   .scope{ position:absolute; left:0; bottom:-1px; height:2px; width:0; background:linear-gradient(90deg,transparent,var(--a1),var(--a4),transparent); transition:width .1s linear }
-  @media (max-width:940px){
+  @media (max-width:1080px){
     .navCta{ display:none }
     .navToggle{ display:grid; place-items:center }
     .navLinks{ display:none; position:absolute; top:72px; left:0; right:0; flex-direction:column; align-items:stretch; background:#070b17; border-bottom:1px solid var(--line); padding:12px 18px 18px; gap:2px; box-shadow:0 30px 50px -24px rgba(0,0,0,.95) }
@@ -319,6 +322,68 @@
 
   .reveal{ opacity:0; transform:translateY(26px); transition:opacity .7s var(--ease),transform .7s var(--ease); transition-delay:var(--d,0ms) }
   .reveal.in{ opacity:1; transform:none }
+
+  /* ---------- store band ---------- */
+  .storeBand{
+    position:relative; display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(24px,4vw,54px); align-items:center;
+    border:1px solid rgba(52,211,153,.22); border-radius:26px; overflow:hidden;
+    padding:clamp(26px,4.4vw,52px);
+    background:
+      radial-gradient(620px 300px at 8% -10%,rgba(52,211,153,.16),transparent 68%),
+      radial-gradient(560px 320px at 105% 110%,rgba(125,211,252,.14),transparent 66%),
+      linear-gradient(180deg,rgba(255,255,255,.04),transparent);
+  }
+  .storeBand::after{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image:linear-gradient(rgba(148,163,184,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.05) 1px,transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(70% 70% at 20% 0%,#000,transparent); -webkit-mask-image:radial-gradient(70% 70% at 20% 0%,#000,transparent);
+  }
+  .storeBand > *{ position:relative }
+  .storeStats{ display:flex; gap:9px; flex-wrap:wrap; margin-top:24px }
+  .storeStats .pill svg{ color:var(--a3) }
+  .storePreview{
+    border:1px solid var(--line-2); border-radius:18px; background:rgba(8,12,24,.82); overflow:hidden;
+    box-shadow:var(--shadow); backdrop-filter:blur(10px);
+  }
+  .spBar{ display:flex; align-items:center; gap:7px; padding:11px 14px; border-bottom:1px solid var(--line); background:rgba(255,255,255,.03) }
+  .spBar i{ width:9px; height:9px; border-radius:50% }
+  .spBar i:nth-child(1){ background:#fb7185 } .spBar i:nth-child(2){ background:#fbbf24 } .spBar i:nth-child(3){ background:#34d399 }
+  .spBar span{ margin-left:8px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-2); font-weight:700 }
+  .spList{ list-style:none; display:flex; flex-direction:column }
+  .spList a{
+    display:flex; align-items:center; gap:12px; padding:13px 15px; border-top:1px solid rgba(148,163,184,.12);
+    transition:background .18s;
+  }
+  .spList a:first-child{ border-top:0 }
+  .spList a:hover{ background:rgba(125,211,252,.07); text-decoration:none }
+  .spIco{ width:34px; height:34px; border-radius:10px; display:grid; place-items:center; flex:none; background:rgba(125,211,252,.1); border:1px solid rgba(125,211,252,.22); color:var(--a1) }
+  .spIco svg{ width:16px; height:16px }
+  .spIco.k-skill{ background:rgba(125,211,252,.12); border-color:rgba(125,211,252,.3); color:#7dd3fc }
+  .spIco.k-extension{ background:rgba(167,139,250,.12); border-color:rgba(167,139,250,.3); color:#a78bfa }
+  .spIco.k-app{ background:rgba(52,211,153,.12); border-color:rgba(52,211,153,.3); color:#34d399 }
+  .spIco.k-forge{ background:rgba(251,191,36,.12); border-color:rgba(251,191,36,.3); color:#fbbf24 }
+  .spList b{ display:block; font-size:13.6px; font-weight:640; color:var(--txt); letter-spacing:-.01em }
+  .spList small{ display:block; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted-2); margin-top:2px }
+  .spList em{ margin-left:auto; font-style:normal; font-size:11px; font-weight:700; color:var(--a1); border:1px solid rgba(125,211,252,.28); background:rgba(125,211,252,.08); padding:4px 9px; border-radius:999px }
+  .spList a:hover em{ background:rgba(125,211,252,.16) }
+  .spFoot{ padding:11px 15px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted-2) }
+
+  /* ---------- download band ---------- */
+  .dl{
+    position:relative; display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(24px,4vw,54px); align-items:center;
+    border:1px solid var(--line-2); border-radius:26px; padding:clamp(26px,4.4vw,52px); overflow:hidden;
+    background:
+      radial-gradient(620px 320px at 100% -20%,rgba(167,139,250,.18),transparent 66%),
+      linear-gradient(180deg,rgba(255,255,255,.045),transparent);
+  }
+  .dlFacts{ display:flex; flex-direction:column; gap:10px }
+  .fact{ display:flex; align-items:baseline; gap:10px; padding:13px 16px; border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.025) }
+  .fact b{ font-size:13px; font-weight:700; color:var(--txt); letter-spacing:-.01em }
+  .fact span{ font-size:12.4px; color:var(--muted) }
+  @media (max-width:900px){
+    .storeBand,.dl{ grid-template-columns:1fr }
+  }
 
   @media (min-width:999999px){
     html{ scroll-behavior:auto }
@@ -553,6 +618,8 @@
 <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
 <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="i-store" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.6-5h14.8L21 9"/><path d="M4.5 9v11h15V9"/><path d="M3 9a2.6 2.6 0 0 0 5.2 0 2.6 2.6 0 0 0 5.6 0 2.6 2.6 0 0 0 5.2 0"/><path d="M9.5 20v-5.5h5V20"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 4h-4a4 4 0 0 0-3 1.5V20a2.5 2.5 0 0 1 2.5-2.5H20z"/></symbol>
 </defs></svg>
 <div class="bgAurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="bgGrid" aria-hidden="true"></div>
@@ -572,12 +639,13 @@
       <a href="#privacy" data-i18n="nav.privacy">Privacy</a>
       <a href="#start" data-i18n="nav.start">Get started</a>
       <a href="docs.html" data-i18n="nav.docs">Docs</a>
+      <a href="store.html" data-i18n="nav.store">Store</a>
       <a href="#license" data-i18n="nav.license">License</a>
       <div class="lang" role="group" aria-label="Language" data-i18n-aria="a11y.lang">
         <button type="button" data-lang="en" class="on">EN</button>
         <button type="button" data-lang="pt">PT</button>
       </div>
-      <a class="btn primary navCta" href="#start" data-i18n="nav.cta">Get started</a>
+      <a class="btn primary navCta" href="#download" data-i18n="nav.cta">Download</a>
     </nav>
     <span class="scope" id="scope" aria-hidden="true"></span>
   </div>
@@ -591,7 +659,8 @@
         <h1 data-i18n="hero.title">Stop prompting.<br>Start <span class="grad">delegating.</span></h1>
         <p class="lead" data-i18n="hero.sub">AssistIO is a local-first workspace where AI agents read your files, run commands, manage projects, and keep working after you close the laptop - on your machine, under your control.</p>
         <div class="btnRow">
-          <a class="btn primary" href="#start"><span data-i18n="hero.cta1">Get started - free</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn primary" href="#download"><span data-i18n="hero.cta1">Download free</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn store" href="store.html"><svg aria-hidden="true"><use href="#i-store"/></svg><span data-i18n="hero.ctaStore">Open the Store</span></a>
           <a class="btn ghost" href="#product" data-i18n="hero.cta2">See it in action</a>
         </div>
         <div class="badges">
@@ -925,6 +994,74 @@
       </div>
     </div>
   </section>
+<section class="sec" id="store">
+    <div class="wrap">
+      <div class="storeBand reveal">
+        <div>
+          <span class="kicker" data-i18n="store.kicker">AssistIO Store</span>
+          <h2 data-i18n="store.title">Add capabilities without touching the app.</h2>
+          <p class="lead" data-i18n="store.sub">Skills, extensions, internal apps and Forge plugins — every resource has a permalink that hands the install to AssistIO. You confirm inside the app; nothing runs from the browser.</p>
+          <div class="btnRow">
+            <a class="btn primary" href="store.html"><svg aria-hidden="true"><use href="#i-store"/></svg><span data-i18n="store.cta1">Open the Store</span></a>
+            <a class="btn ghost" href="docs.html?file=store.md"><svg aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="store.cta2">How installs work</span></a>
+          </div>
+          <div class="storeStats">
+            <span class="pill"><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="store.s1">Public, reviewed resources</span></span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-grid"/></svg><span data-i18n="store.s2">4 resource types</span></span>
+            <span class="pill"><svg aria-hidden="true"><use href="#i-shield"/></svg><span data-i18n="store.s3">SHA-256 verified installs</span></span>
+          </div>
+        </div>
+        <div class="storePreview">
+          <div class="spBar" aria-hidden="true"><i></i><i></i><i></i><span data-i18n="store.preview">store</span></div>
+          <ul class="spList">
+            <li><a href="store.html?r=raxiomlab.skill.research-brief">
+              <span class="spIco k-skill"><svg aria-hidden="true"><use href="#i-sparkles"/></svg></span>
+              <span><b data-i18n="store.p1n">Deep research brief</b><small data-i18n="store.k1">Skill</small></span>
+              <em data-i18n="store.install">Install</em>
+            </a></li>
+            <li><a href="store.html?r=raxiomlab.extension.dev-desk">
+              <span class="spIco k-extension"><svg aria-hidden="true"><use href="#i-plug"/></svg></span>
+              <span><b data-i18n="store.p2n">Dev Desk</b><small data-i18n="store.k2">Extension</small></span>
+              <em data-i18n="store.install">Install</em>
+            </a></li>
+            <li><a href="store.html?r=raxiomlab.app.invoice-studio">
+              <span class="spIco k-app"><svg aria-hidden="true"><use href="#i-grid"/></svg></span>
+              <span><b data-i18n="store.p3n">Invoice Studio</b><small data-i18n="store.k3">Internal app</small></span>
+              <em data-i18n="store.install">Install</em>
+            </a></li>
+            <li><a href="store.html?r=raxiomlab.forge.feed-digest">
+              <span class="spIco k-forge"><svg aria-hidden="true"><use href="#i-zap"/></svg></span>
+              <span><b data-i18n="store.p4n">Feed digest</b><small data-i18n="store.k4">Forge plugin</small></span>
+              <em data-i18n="store.install">Install</em>
+            </a></li>
+          </ul>
+          <div class="spFoot" data-i18n="store.pFoot">One permalink per resource. The OS hands it to AssistIO; you confirm.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="download">
+    <div class="wrap">
+      <div class="dl reveal">
+        <div>
+          <span class="kicker" data-i18n="dl.kicker">Get AssistIO</span>
+          <h2 data-i18n="dl.title">Download it. It runs on your machine.</h2>
+          <p class="lead" data-i18n="dl.sub">Desktop, web and Android from the same release. Free to use, no account, no data migration.</p>
+          <div class="btnRow">
+            <a class="btn primary" href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-desktop"/></svg><span data-i18n="dl.desktop">Desktop build</span></a>
+            <a class="btn ghost" href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-phone"/></svg><span data-i18n="dl.android">Android APK</span></a>
+            <a class="btn ghost" href="https://github.com/raxiomlab/assistio/releases" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-globe"/></svg><span data-i18n="dl.web">Web</span></a>
+          </div>
+          <p class="tiny" style="margin-top:18px;max-width:56ch" data-i18n="dl.note">Latest builds live on the Releases page. The Android app pairs with your desktop by QR code, and your conversations stay in sync across devices.</p>
+        </div>
+        <div class="dlFacts">
+          <div class="fact"><b data-i18n="dl.f1t">Free to use</b><span data-i18n="dl.f1">no card, no trial, no feature gates</span></div>
+          <div class="fact"><b data-i18n="dl.f2t">Your provider</b><span data-i18n="dl.f2">bring your own API key</span></div>
+          <div class="fact"><b data-i18n="dl.f3t">Local-first</b><span data-i18n="dl.f3">files, memory and history stay local</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 <section class="sec" id="start">
     <div class="wrap">
       <div class="secHead center reveal">
@@ -1017,17 +1154,18 @@
         <h2 class="display" data-i18n="cta.title">Give your machine a team.</h2>
         <p data-i18n="cta.sub">Install, connect a provider, and start delegating in minutes.</p>
         <div class="btnRow">
-          <a class="btn primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfV3kvkzOM4lA_YVk-By31zaboCzuSZJhyz5YPn2vlmajR-mQ/viewform?usp=header" target="_blank" rel="noopener">
-            <span data-i18n="cta.b1">Get started - free</span>
+          <a class="btn primary" href="#download">
+            <span data-i18n="cta.b1">Download AssistIO</span>
             <svg aria-hidden="true"><use href="#i-arrow"/></svg>
           </a>
+          <a class="btn store" href="store.html"><svg aria-hidden="true"><use href="#i-store"/></svg><span data-i18n="cta.b2">Open the Store</span></a>
           <a class="btn ghost" href="mailto:rodrigoramosrs2@hotmail.com">
             <svg aria-hidden="true"><use href="#i-mail"/></svg>
-            <span data-i18n="cta.b2">Talk to RaxiomLab</span>
+            <span data-i18n="cta.b3">Talk to RaxiomLab</span>
           </a>
-          <a class="btn ghost" href="https://docs.google.com/forms/d/e/1FAIpQLSfV3kvkzOM4lA_YVk-By31zaboCzuSZJhyz5YPn2vlmajR-mQ/viewform?usp=header" target="_blank" rel="noopener"><span data-i18n="cta.b3">Join the beta test</span></a>
         </div>
         <div class="note" data-i18n="cta.note">AssistIO is proprietary software. Free-use license, no resale. Sharing, copying, modifying or reverse-engineering without written permission from the author is prohibited.</div>
+        <p class="center" style="margin-top:14px"><a class="tiny" href="https://docs.google.com/forms/d/e/1FAIpQLSfV3kvkzOM4lA_YVk-By31zaboCzuSZJhyz5YPn2vlmajR-mQ/viewform?usp=header" target="_blank" rel="noopener" data-i18n="cta.b4">Or join the beta test</a></p>
       </div>
     </div>
   </section>
@@ -1040,6 +1178,7 @@
       <a href="#capabilities" data-i18n="nav.capabilities">Capabilities</a>
       <a href="#privacy" data-i18n="nav.privacy">Privacy</a>
       <a href="docs.html" data-i18n="nav.docs">Docs</a>
+      <a href="store.html" data-i18n="nav.store">Store</a>
       <a href="#license" data-i18n="nav.license">License</a>
       <a href="mailto:rodrigoramosrs2@hotmail.com" data-i18n="foot.contact">Contact</a>
     </nav>
@@ -1135,12 +1274,12 @@
 var I18N = {};
 I18N.en = {
   a11y:{ skip:"Skip to content", menu:"Menu", primary:"Primary", footer:"Footer", lang:"Language", modes:"Modes", demo:"Animated demo: the agent reads a file, asks for approval, shows a diff and answers." },
-  nav:{ capabilities:"Capabilities", product:"Product", why:"Why", privacy:"Privacy", docs:"Docs", start:"Get started", license:"License", cta:"Get started" },
+  nav:{ capabilities:"Capabilities", product:"Product", why:"Why", privacy:"Privacy", docs:"Docs", store:"Store", start:"Get started", license:"License", cta:"Download" },
   hero:{
     kicker:"Local-first - runs on your machine",
     title:"Stop prompting.<br>Start <span class='grad'>delegating.</span>",
     sub:"AssistIO is a local-first workspace where AI agents read your files, run commands, manage projects, and keep working after you close the laptop - on your machine, under your control.",
-    cta1:"Get started - free", cta2:"See it in action",
+    cta1:"Download free", ctaStore:"Open the Store", cta2:"See it in action",
     b1:"Free to use", b2:"Local-first", b3:"Desktop / Web / Android", b4:"A mascot that plays with you", scroll:"Scroll to explore"
   },
   console:{
@@ -1151,7 +1290,7 @@ I18N.en = {
     file:"src/api/orders.ts", fileShort:"orders.ts", status:"done",
     answer:"Done. Errors now carry the HTTP status, and the body is logged without leaking credentials."
   },
-  mq:["Local-first","Tool approvals","Background tasks","Persistent memory","MCP servers","Custom plugins","Cross-device sync","Full audit trail","Encrypted vault","A kanban that executes"],
+  mq:["Local-first","Tool approvals","Background tasks","Persistent memory","MCP servers","Custom plugins","One-click installs","Cross-device sync","Full audit trail","Encrypted vault","A kanban that executes"],
   why:{
     kicker:"The problem", title:"You don't need another chat box.",
     sub:"Chat assistants hand you text. AssistIO gives you finished work - because it runs where your work actually lives.",
@@ -1242,9 +1381,31 @@ I18N.en = {
     q6:"Does it work on my phone?", a6:"Yes. The Android app syncs with your desktop by QR code and follows conversations, tasks and boards live. The phone drives the view; execution stays where the server runs.",
     q7:"Who is IO, the little guy floating around?", a7:"IO is the mascot of this page: it follows your scroll, flies over the cards, sleeps when you leave it alone and plays with you. Drag it, throw it, double-click it - and open the arcade with the gamepad button in the corner. Rumor has it there is a secret code hidden somewhere."
   },
+  store:{
+    kicker:"AssistIO Store",
+    title:"Add capabilities without touching the app.",
+    sub:"Skills, extensions, internal apps and Forge plugins - every resource has a permalink that hands the install to AssistIO. You confirm inside the app; nothing runs from the browser.",
+    cta1:"Open the Store", cta2:"How installs work",
+    s1:"Public, reviewed resources", s2:"4 resource types", s3:"SHA-256 verified installs",
+    preview:"store",
+    p1n:"Deep research brief", p2n:"Dev Desk", p3n:"Invoice Studio", p4n:"Feed digest",
+    k1:"Skill", k2:"Extension", k3:"Internal app", k4:"Forge plugin",
+    install:"Install",
+    pFoot:"One permalink per resource. The OS hands it to AssistIO; you confirm."
+  },
+  dl:{
+    kicker:"Get AssistIO",
+    title:"Download it. It runs on your machine.",
+    sub:"Desktop, web and Android from the same release. Free to use, no account, no data migration.",
+    desktop:"Desktop build", android:"Android APK", web:"Web",
+    note:"Latest builds live on the Releases page. The Android app pairs with your desktop by QR code, and your conversations stay in sync across devices.",
+    f1t:"Free to use", f1:"no card, no trial, no feature gates",
+    f2t:"Your provider", f2:"bring your own API key",
+    f3t:"Local-first", f3:"files, memory and history stay local"
+  },
   cta:{
     title:"Give your machine a team.", sub:"Install, connect a provider, and start delegating in minutes.",
-    b1:"Get started - free", b2:"Talk to RaxiomLab", b3:"Join the beta test",
+    b1:"Download AssistIO", b2:"Open the Store", b3:"Talk to RaxiomLab", b4:"Or join the beta test",
     note:"AssistIO is proprietary software. Free-use license, no resale. Sharing, copying, modifying or reverse-engineering without written permission from the author is prohibited."
   },
   foot:{ rights:"(c) 2026 Rodrigo - RaxiomLab. All rights reserved.", contact:"Contact" },
@@ -1334,12 +1495,12 @@ I18N.en = {
 };
 I18N.pt = {
   a11y:{ skip:"Pular para o conteudo", menu:"Menu", primary:"Principal", footer:"Rodape", lang:"Idioma", modes:"Modos", demo:"Demonstracao animada: o agente le um arquivo, pede aprovacao, mostra o diff e responde." },
-  nav:{ capabilities:"Recursos", product:"Produto", why:"Por que", privacy:"Privacidade", docs:"Documentacao", start:"Como comecar", license:"Licenca", cta:"Comecar agora" },
+  nav:{ capabilities:"Recursos", product:"Produto", why:"Por que", privacy:"Privacidade", docs:"Documentacao", store:"Loja", start:"Como comecar", license:"Licenca", cta:"Baixar" },
   hero:{
     kicker:"Local-first - roda na sua maquina",
     title:"Pare de pedir.<br>Comece a <span class='grad'>delegar.</span>",
     sub:"O AssistIO e um workspace local-first onde agentes de IA leem seus arquivos, executam comandos, gerenciam projetos e continuam trabalhando depois que voce fecha o notebook - na sua maquina, sob o seu controle.",
-    cta1:"Comecar - gratis", cta2:"Ver em acao",
+    cta1:"Baixar - grátis", ctaStore:"Abrir a Loja", cta2:"Ver em acao",
     b1:"Uso gratuito", b2:"Local-first", b3:"Desktop / Web / Android", b4:"Um mascote que joga com voce", scroll:"Role para explorar"
   },
   console:{
@@ -1350,7 +1511,7 @@ I18N.pt = {
     file:"src/api/orders.ts", fileShort:"orders.ts", status:"concluido",
     answer:"Pronto. O erro agora carrega o status HTTP, e o body e registrado sem vazar credenciais."
   },
-  mq:["Local-first","Aprovacao de tools","Tarefas em segundo plano","Memoria persistente","Servidores MCP","Plugins proprios","Sincronia entre telas","Auditoria completa","Cofre criptografado","Kanban que executa"],
+  mq:["Local-first","Aprovacao de tools","Tarefas em segundo plano","Memoria persistente","Servidores MCP","Plugins proprios","Instalação em um clique","Sincronia entre telas","Auditoria completa","Cofre criptografado","Kanban que executa"],
   why:{
     kicker:"O problema", title:"Voce nao precisa de mais um chat.",
     sub:"Chats entregam texto. O AssistIO entrega trabalho concluido - porque roda onde o seu trabalho realmente acontece.",
@@ -1441,9 +1602,31 @@ I18N.pt = {
     q6:"Funciona no meu celular?", a6:"Sim. O app Android sincroniza com o seu desktop por QR code e acompanha conversas, tarefas e quadros ao vivo. O celular ve; a execucao fica onde o servidor roda.",
     q7:"Quem e o IO, o baixinho que fica voando?", a7:"IO e o mascote desta pagina: ele acompanha sua rolagem, voa sobre os cards, dorme quando voce o abandona e joga com voce. Arraste, arremesse, de duplo clique - e abra o arcade no botao de controle aqui no canto. Dizem que existe um codigo secreto escondido por ai."
   },
+  store:{
+    kicker:"Loja do AssistIO",
+    title:"Adicione capacidades sem mexer no app.",
+    sub:"Skills, extensoes, apps internos e plugins Forge - cada recurso tem um permalink que entrega a instalação ao AssistIO. Você confirma dentro do app; nada roda pelo navegador.",
+    cta1:"Abrir a Loja", cta2:"Como funciona a instalação",
+    s1:"Recursos públicos revisados", s2:"4 tipos de recurso", s3:"Instalação com SHA-256",
+    preview:"loja",
+    p1n:"Briefing de pesquisa profunda", p2n:"Dev Desk", p3n:"Invoice Studio", p4n:"Digest de feeds",
+    k1:"Skill", k2:"Extensão", k3:"App interno", k4:"Plugin Forge",
+    install:"Instalar",
+    pFoot:"Um permalink por recurso. O sistema entrega ao AssistIO; você confirma."
+  },
+  dl:{
+    kicker:"Baixar o AssistIO",
+    title:"Baixe. Roda na sua máquina.",
+    sub:"Desktop, web e Android na mesma versao. Uso gratuito, sem conta, sem migração de dados.",
+    desktop:"Build para desktop", android:"APK Android", web:"Web",
+    note:"Os builds mais recentes estão na página de Releases. O app Android se conecta ao desktop por QR code e as conversas ficam sincronizadas entre dispositivos.",
+    f1t:"Uso gratuito", f1:"sem cartão, sem trial, sem recursos bloqueados",
+    f2t:"Seu provider", f2:"use sua própria chave de API",
+    f3t:"Local-first", f3:"arquivos, memória e histórico ficam locais"
+  },
   cta:{
     title:"De um time para a sua maquina.", sub:"Instale, conecte um provedor e comece a delegar em minutos.",
-    b1:"Comecar - gratis", b2:"Falar com a RaxiomLab", b3:"Entrar no beta",
+    b1:"Baixar o AssistIO", b2:"Abrir a Loja", b3:"Falar com a RaxiomLab", b4:"Ou entrar no beta",
     note:"O AssistIO e um software proprietario. Licenca de uso gratuito, sem revenda. Compartilhar, copiar, modificar ou fazer engenharia reversa sem autorizacao por escrito do autor e proibido."
   },
   foot:{ rights:"(c) 2026 Rodrigo - RaxiomLab. Todos os direitos reservados.", contact:"Contato" },
@@ -1743,6 +1926,32 @@ function buildReveal(){
   for (var j = 0; j < nodes.length; j++) io.observe(nodes[j]);
 }
 
+function initSpy(){
+  var links = [], nodes = document.querySelectorAll('.navLinks a[href^="#"]');
+  var map = {};
+  for (var i = 0; i < nodes.length; i++){
+    var id = nodes[i].getAttribute("href").slice(1);
+    if (id && document.getElementById(id)){ links.push(nodes[i]); map[id] = nodes[i]; }
+  }
+  var watched = ["top","why","capabilities","product","compare","privacy","store","download","start","license","faq","cta"];
+  var targets = [];
+  for (var w = 0; w < watched.length; w++){
+    var sec = document.getElementById(watched[w]);
+    if (sec){ targets.push(sec); if (!map[watched[w]]) map[watched[w]] = null; }
+  }
+  if (!targets.length || !window.IntersectionObserver) return;
+  function clear(){ for (var k = 0; k < links.length; k++) links[k].classList.remove("on"); }
+  var io = new IntersectionObserver(function(entries){
+    for (var j = 0; j < entries.length; j++){
+      if (!entries[j].isIntersecting) continue;
+      var active = map[entries[j].target.id];
+      clear();
+      if (active) active.classList.add("on");
+    }
+  }, { rootMargin:"-45% 0px -50% 0px", threshold:0 });
+  targets.forEach(function(sec){ io.observe(sec); });
+}
+
 function initUI(){
   var header = document.getElementById("header"), scope = document.getElementById("scope");
   function onScroll(){
@@ -1784,6 +1993,8 @@ function initUI(){
       }, { passive: true });
     }
   }
+
+  initSpy();
 }
 
 /* ===================== IO 2.0 - companheiro da pagina ===================== */
