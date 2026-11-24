@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.skill.research-brief",
+  "kind": "skill",
+  "slug": "research-brief",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "featured": true,
+  "icon": "search",
+  "locales": {
+    "en": {
+      "name": "Deep research brief",
+      "summary": "Turn a question into a sourced brief with confidence levels, contradictions and open questions.",
+      "readme": "## What it does\n\n`Deep research brief` gives the agent a fixed research method instead of an improvised answer. You give it a question, a decision to support, or a market to scan; it returns a structured brief you can forward.\n\n## Output contract\n\nEvery brief contains:\n\n- **Answer first** — three to five sentences that directly answer the question.\n- **Evidence table** — claim, source, date, and how strongly the source supports it.\n- **Confidence** — high / medium / low per finding, with the reason.\n- **Contradictions** — where credible sources disagree, and what would settle it.\n- **Gaps** — what could not be verified and what to check next.\n\n## How to use it\n\nAsk in plain language, for example:\n\n> Research whether small teams actually save time with local AI agents. I need this for a product decision on Friday. Prefer 2024-2026 sources.\n\nThe skill then plans the searches, fetches primary sources first, and only falls back to commentary when primary data is unavailable.\n\n## Rules it enforces\n\n- A source is a URL that was actually opened and read, not a search-result snippet.\n- Numbers keep their original unit, period and definition.\n- Statements without a source are marked **unverified**.\n- Marketing pages are labelled as vendor claims, not evidence.\n\n## Permissions\n\nUses the agent's web search and web fetch tools. It does not write files or run commands, and it needs no credentials."
+    },
+    "pt": {
+      "name": "Briefing de pesquisa profunda",
+      "summary": "Transforma uma pergunta em um briefing com fontes, nível de confiança, contradições e lacunas.",
+      "readme": "## O que faz\n\n`Briefing de pesquisa profunda` dá ao agente um método fixo de pesquisa em vez de uma resposta improvisada. Você entrega uma pergunta, uma decisão a sustentar ou um mercado a mapear; ele devolve um briefing estruturado, pronto para encaminhar.\n\n## Contrato de saída\n\nTodo briefing contém:\n\n- **Resposta primeiro** — três a cinco frases que respondem diretamente à pergunta.\n- **Tabela de evidências** — afirmação, fonte, data e a força do apoio da fonte.\n- **Confiança** — alta / média / baixa por achado, com o motivo.\n- **Contradições** — onde fontes confiáveis discordam e o que resolveria a dúvida.\n- **Lacunas** — o que não foi possível verificar e o próximo passo de checagem.\n\n## Como usar\n\nPeça em linguagem natural, por exemplo:\n\n> Pesquise se equipes pequenas realmente economizam tempo com agentes de IA locais. Preciso disso para uma decisão de produto na sexta. Priorize fontes de 2024-2026.\n\nA skill planeja as buscas, prioriza fontes primárias e só recorre a comentários quando não há dado primário.\n\n## Regras que ela impõe\n\n- Fonte é uma URL realmente aberta e lida, não um trecho de resultado de busca.\n- Números mantêm unidade, período e definição originais.\n- Afirmações sem fonte são marcadas como **não verificadas**.\n- Páginas de marketing são rotuladas como alegação do fornecedor, não como evidência.\n\n## Permissões\n\nUsa as ferramentas de busca e leitura web do agente. Não grava arquivos, não executa comandos e não precisa de credenciais."
+    }
+  },
+  "tags": ["research", "writing", "web", "no-credentials"],
+  "platforms": ["desktop", "web", "android"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": true,
+    "runtime": "declarative",
+    "tools": ["web_search", "web_fetch"],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "net.read",
+      "risk": "low",
+      "label": { "en": "Read web pages", "pt": "Ler páginas da web" },
+      "reason": {
+        "en": "Opens the sources it cites so claims can be checked.",
+        "pt": "Abre as fontes citadas para que as afirmações possam ser conferidas."
+      }
+    }
+  ],
+  "entry": { "type": "skill", "path": "SKILL.md" },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

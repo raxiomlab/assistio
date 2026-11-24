@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.extension.dev-desk",
+  "kind": "extension",
+  "slug": "dev-desk",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "featured": true,
+  "icon": "terminal",
+  "locales": {
+    "en": {
+      "name": "Dev Desk",
+      "summary": "Three commands, one staff-engineer agent and a prompt shelf for planning, reviewing and shipping.",
+      "readme": "## What it adds\n\nDev Desk is a small extension pack for day-to-day software work. It contributes:\n\n- **Commands** — `/plan`, `/review`, `/ship`.\n- **Agent preset** — **Staff Engineer**, an agent that plans before it edits and keeps changes small.\n- **Prompts** — a shelf of reusable asks: threat model, migration plan, test matrix, rollback plan.\n- **Setting** — review depth (`light`, `balanced`, `deep`).\n\n## Commands\n\n| Command | What it does |\n|---|---|\n| `/plan` | Turns a request into a scoped plan with risks, files and verification steps. |\n| `/review` | Reviews the current diff with blocking and non-blocking findings. |\n| `/ship` | Produces a release checklist, then a release note draft. |\n\n## Design choices\n\n- Nothing runs automatically. Every command is an explicit invocation.\n- The agent preset has no shell access by default; you can grant it per workspace.\n- Prompts are plain text you can edit after installing.\n\n## What it does not do\n\n- It does not install MCP servers or credentials.\n- It does not change your global tool policy.\n- It does not phone home.\n\n## Permissions\n\nOnly contributes UI commands, an agent preset, prompts and one setting. No file, network or shell access is granted by the pack itself."
+    },
+    "pt": {
+      "name": "Dev Desk",
+      "summary": "Três comandos, um agente staff engineer e uma prateleira de prompts para planejar, revisar e lançar.",
+      "readme": "## O que adiciona\n\nDev Desk é um pacote pequeno para o dia a dia de software. Ele contribui com:\n\n- **Comandos** — `/plan`, `/review`, `/ship`.\n- **Agente** — **Staff Engineer**, um agente que planeja antes de editar e mantém mudanças pequenas.\n- **Prompts** — uma prateleira reutilizável: threat model, plano de migração, matriz de testes, plano de rollback.\n- **Configuração** — profundidade de revisão (`light`, `balanced`, `deep`).\n\n## Comandos\n\n| Comando | O que faz |\n|---|---|\n| `/plan` | Transforma um pedido em plano com escopo, riscos, arquivos e passos de verificação. |\n| `/review` | Revisa o diff atual com achados bloqueantes e não bloqueantes. |\n| `/ship` | Monta um checklist de release e um rascunho de notas de versão. |\n\n## Decisões de projeto\n\n- Nada roda automaticamente. Todo comando é uma invocação explícita.\n- O agente não tem acesso a shell por padrão; você pode conceder por workspace.\n- Prompts são texto simples, editável depois da instalação.\n\n## O que ele não faz\n\n- Não instala servidores MCP nem credenciais.\n- Não altera sua política global de ferramentas.\n- Não envia dados para fora.\n\n## Permissões\n\nApenas contribui comandos de interface, um agente, prompts e uma configuração. O pacote em si não concede acesso a arquivos, rede ou shell."
+    }
+  },
+  "tags": ["coding", "productivity", "review", "starter", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "declarative",
+    "tools": [],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "ui.commands",
+      "risk": "low",
+      "label": { "en": "Add commands", "pt": "Adicionar comandos" },
+      "reason": {
+        "en": "Registers /plan, /review and /ship in the command palette.",
+        "pt": "Registra /plan, /review e /ship na paleta de comandos."
+      }
+    },
+    {
+      "id": "agents.install",
+      "risk": "low",
+      "label": { "en": "Add an agent preset", "pt": "Adicionar um agente" },
+      "reason": {
+        "en": "Adds the Staff Engineer preset; it stays disabled until you use it.",
+        "pt": "Adiciona o preset Staff Engineer; ele fica desativado até você usar."
+      }
+    },
+    {
+      "id": "prompts.install",
+      "risk": "low",
+      "label": { "en": "Add prompts", "pt": "Adicionar prompts" },
+      "reason": {
+        "en": "Adds editable prompt templates to your library.",
+        "pt": "Adiciona modelos de prompt editáveis à sua biblioteca."
+      }
+    },
+    {
+      "id": "settings.write",
+      "risk": "low",
+      "label": { "en": "Add one setting", "pt": "Adicionar uma configuração" },
+      "reason": {
+        "en": "Registers the review-depth setting in the extension namespace.",
+        "pt": "Registra a configuração de profundidade de revisão no namespace da extensão."
+      }
+    }
+  ],
+  "entry": { "type": "extension" },
+  "contributes": {
+    "commands": [
+      {
+        "id": "devdesk.plan",
+        "title": { "en": "Plan this work", "pt": "Planejar este trabalho" },
+        "icon": "map",
+        "prompt": "Read the request and the relevant files first. Produce a plan with: goal, non-goals, files to touch, risks, verification steps, and the smallest first change. Do not edit anything yet."
+      },
+      {
+        "id": "devdesk.review",
+        "title": { "en": "Review current diff", "pt": "Revisar diff atual" },
+        "icon": "check",
+        "prompt": "Review the current git diff. Return: verdict, blocking findings with file:line and a failure scenario, non-blocking notes, and missing tests. Do not modify the code."
+      },
+      {
+        "id": "devdesk.ship",
+        "title": { "en": "Prepare a release", "pt": "Preparar um release" },
+        "icon": "rocket",
+        "prompt": "Prepare a release checklist for the current branch: version bump, changelog, migration notes, rollback plan, and a draft of user-facing release notes. Ask before changing any file."
+      }
+    ],
+    "agents": [
+      {
+        "id": "staff-engineer",
+        "name": { "en": "Staff Engineer", "pt": "Staff Engineer" },
+        "description": {
+          "en": "Plans first, keeps diffs small, verifies before claiming done.",
+          "pt": "Planeja primeiro, mantém diffs pequenos e verifica antes de dizer que terminou."
+        },
+        "instructions": "You are a staff engineer. Read before writing. Prefer the smallest change that solves the problem. State assumptions. Verify with the project's own tests or commands. Report what you did, what you did not do, and what remains uncertain. Never claim success without evidence.",
+        "tools": ["read_file", "list_files", "search_files", "apply_patch", "run_command"],
+        "toolPolicy": "ask"
+      }
+    ],
+    "prompts": [
+      {
+        "id": "devdesk.threat-model",
+        "title": { "en": "Threat model this change", "pt": "Modelar ameaças desta mudança" },
+        "body": "Act as a security reviewer. List assets, entry points, trust boundaries, likely abuse cases and the cheapest mitigation for each. Be concrete about this repository."
+      },
+      {
+        "id": "devdesk.migration",
+        "title": { "en": "Write a migration plan", "pt": "Escrever um plano de migração" },
+        "body": "Produce a migration plan: current shape, target shape, ordered steps, data backfill, dual-read/write window, rollback, and how to verify each step."
+      },
+      {
+        "id": "devdesk.test-matrix",
+        "title": { "en": "Build a test matrix", "pt": "Montar uma matriz de testes" },
+        "body": "List the behaviours that changed and the smallest set of tests (unit, integration, end-to-end) that would catch regressions. Include the sad paths."
+      },
+      {
+        "id": "devdesk.rollback",
+        "title": { "en": "Plan a rollback", "pt": "Planejar um rollback" },
+        "body": "Write the rollback plan for this change: trigger conditions, exact steps, data implications, and what monitoring confirms recovery."
+      }
+    ],
+    "settings": [
+      {
+        "key": "devdesk.reviewDepth",
+        "type": "enum",
+        "default": "balanced",
+        "values": ["light", "balanced", "deep"],
+        "title": { "en": "Review depth", "pt": "Profundidade da revisão" },
+        "description": {
+          "en": "How far the review looks beyond the changed lines.",
+          "pt": "O quanto a revisão olha além das linhas alteradas."
+        }
+      }
+    ]
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

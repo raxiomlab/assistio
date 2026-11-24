@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.extension.focus-sprint",
+  "kind": "extension",
+  "slug": "focus-sprint",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "icon": "timer",
+  "locales": {
+    "en": {
+      "name": "Focus Sprint",
+      "summary": "A calm theme, sprint commands and a coach agent that protects one objective at a time.",
+      "readme": "## What it adds\n\nFocus Sprint turns a long to-do list into a single time-boxed sprint. It contributes:\n\n- **Theme** — a low-contrast slate palette for long sessions.\n- **Commands** — `/sprint start`, `/sprint review`, `/sprint stop`.\n- **Agent preset** — **Sprint Coach**, which refuses to widen scope mid-sprint.\n- **Setting** — sprint length in minutes (25, 50, 90).\n\n## How a sprint works\n\n1. `/sprint start` asks for one objective and one definition of done.\n2. The coach hides everything that is not required for that objective.\n3. At the end, `/sprint review` lists what moved, what blocked, and what to drop.\n4. `/sprint stop` closes the sprint without judgement.\n\n## Design choices\n\n- One objective per sprint. If you name two, the coach asks you to pick one.\n- The timer is a suggestion, not an enforcement mechanism.\n- Notes stay in the conversation; the extension stores no data of its own.\n- No notifications, no background timers, no network calls.\n\n## Permissions\n\nAdds commands, a theme, an agent preset and one setting. No file, network or shell access."
+    },
+    "pt": {
+      "name": "Focus Sprint",
+      "summary": "Um tema calmo, comandos de sprint e um agente que protege um objetivo por vez.",
+      "readme": "## O que adiciona\n\nFocus Sprint transforma uma lista longa em um único sprint com tempo delimitado. Ele contribui com:\n\n- **Tema** — paleta slate de baixo contraste para sessões longas.\n- **Comandos** — `/sprint start`, `/sprint review`, `/sprint stop`.\n- **Agente** — **Sprint Coach**, que se recusa a ampliar o escopo no meio do sprint.\n- **Configuração** — duração do sprint em minutos (25, 50, 90).\n\n## Como um sprint funciona\n\n1. `/sprint start` pede um objetivo e uma definição de pronto.\n2. O coach esconde tudo que não é necessário para aquele objetivo.\n3. No fim, `/sprint review` lista o que avançou, o que travou e o que descartar.\n4. `/sprint stop` encerra o sprint sem julgamento.\n\n## Decisões de projeto\n\n- Um objetivo por sprint. Se você nomear dois, o coach pede para escolher um.\n- O timer é uma sugestão, não um mecanismo de coerção.\n- As notas ficam na conversa; a extensão não armazena dados próprios.\n- Sem notificações, sem timers em segundo plano, sem chamadas de rede.\n\n## Permissões\n\nAdiciona comandos, um tema, um agente e uma configuração. Sem acesso a arquivos, rede ou shell."
+    }
+  },
+  "tags": ["productivity", "team", "local-first", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "declarative",
+    "tools": [],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "ui.commands",
+      "risk": "low",
+      "label": { "en": "Add commands", "pt": "Adicionar comandos" },
+      "reason": {
+        "en": "Registers the /sprint commands.",
+        "pt": "Registra os comandos /sprint."
+      }
+    },
+    {
+      "id": "ui.theme",
+      "risk": "low",
+      "label": { "en": "Add a theme", "pt": "Adicionar um tema" },
+      "reason": {
+        "en": "Adds a theme you can preview and remove at any time.",
+        "pt": "Adiciona um tema que você pode pré-visualizar e remover a qualquer momento."
+      }
+    },
+    {
+      "id": "agents.install",
+      "risk": "low",
+      "label": { "en": "Add an agent preset", "pt": "Adicionar um agente" },
+      "reason": {
+        "en": "Adds the Sprint Coach preset.",
+        "pt": "Adiciona o preset Sprint Coach."
+      }
+    },
+    {
+      "id": "settings.write",
+      "risk": "low",
+      "label": { "en": "Add one setting", "pt": "Adicionar uma configuração" },
+      "reason": {
+        "en": "Registers the sprint length setting.",
+        "pt": "Registra a configuração de duração do sprint."
+      }
+    }
+  ],
+  "entry": { "type": "extension" },
+  "contributes": {
+    "ui": {
+      "theme": {
+        "id": "focus-sprint",
+        "name": { "en": "Focus Sprint", "pt": "Focus Sprint" },
+        "tokens": {
+          "bg": "#0b1016",
+          "bg2": "#0f1720",
+          "panel": "rgba(148,163,184,.05)",
+          "line": "rgba(148,163,184,.16)",
+          "text": "#e2e8f0",
+          "muted": "#93a4b8",
+          "accent": "#8fb8ff",
+          "accent2": "#9d8cff",
+          "success": "#6ee7b7",
+          "warn": "#fcd34d",
+          "danger": "#fca5a5"
+        }
+      }
+    },
+    "commands": [
+      {
+        "id": "focus.start",
+        "title": { "en": "Start a sprint", "pt": "Iniciar um sprint" },
+        "icon": "timer",
+        "prompt": "Ask me for exactly one objective and one definition of done. Then restate the sprint in one line, list the three smallest steps, and tell me what we are explicitly not doing."
+      },
+      {
+        "id": "focus.review",
+        "title": { "en": "Review the sprint", "pt": "Revisar o sprint" },
+        "icon": "check",
+        "prompt": "Review the current sprint against its definition of done. List: what moved, what is blocked and why, what should be dropped, and the single next action."
+      },
+      {
+        "id": "focus.stop",
+        "title": { "en": "Stop the sprint", "pt": "Encerrar o sprint" },
+        "icon": "square",
+        "prompt": "Close the sprint. Summarise the outcome in three lines and save the carry-over items as a short list. Do not add new work."
+      }
+    ],
+    "agents": [
+      {
+        "id": "sprint-coach",
+        "name": { "en": "Sprint Coach", "pt": "Sprint Coach" },
+        "description": {
+          "en": "Protects one objective and refuses scope creep.",
+          "pt": "Protege um objetivo e recusa aumento de escopo."
+        },
+        "instructions": "You are a sprint coach. Keep exactly one objective active. If the user introduces a second objective, ask which one to keep. Prefer subtraction over addition. At review time, be factual: what moved, what blocked, what to drop. Never invent progress.",
+        "tools": [],
+        "toolPolicy": "none"
+      }
+    ],
+    "settings": [
+      {
+        "key": "focus.sprintMinutes",
+        "type": "enum",
+        "default": 50,
+        "values": [25, 50, 90],
+        "title": { "en": "Sprint length", "pt": "Duração do sprint" },
+        "description": {
+          "en": "Suggested focus block, in minutes.",
+          "pt": "Bloco de foco sugerido, em minutos."
+        }
+      }
+    ]
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

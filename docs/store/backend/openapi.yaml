@@ -1,0 +1,303 @@
+openapi: 3.1.0
+info:
+  title: AssistIO Store API
+  version: "1.0.0"
+  summary: Install counters and community submissions for the AssistIO Store.
+  description: |
+    The catalog is a static JSON file (`docs/store/catalog.json`). This API only
+    covers what static files cannot: aggregated install counters, privacy-safe
+    install events, and human-reviewed submissions.
+
+    The website and the AssistIO app use the same endpoints. Read endpoints are
+    public; the submission queue is protected by a bearer token.
+  license:
+    name: AssistIO Free-Use
+    url: https://github.com/raxiomlab/assistio/blob/main/LICENSE
+servers:
+  - url: https://assistio-store-api.example.workers.dev
+    description: Replace with your deployed Worker URL and set it in docs/store/config.json
+tags:
+  - name: health
+  - name: stats
+  - name: events
+  - name: submissions
+paths:
+  /v1/health:
+    get:
+      tags: [health]
+      operationId: getHealth
+      summary: Liveness probe
+      responses:
+        "200":
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, schema]
+                properties:
+                  ok: { type: boolean, const: true }
+                  schema: { type: integer, const: 1 }
+                  time: { type: string, format: date-time }
+  /v1/stats:
+    get:
+      tags: [stats]
+      operationId: getStats
+      summary: Aggregated install counters
+      description: |
+        Returns one row per requested item. Counters are approximate by design:
+        one install is counted per item, per IP hash, per day.
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          description: Comma-separated item ids (max 50). Omit for the top 100.
+          schema:
+            type: string
+            pattern: '^[a-z0-9]+(\.[a-z0-9][a-z0-9-]*)+(,[a-z0-9]+(\.[a-z0-9][a-z0-9-]*)+)*$'
+      responses:
+        "200":
+          description: Counters
+          headers:
+            Cache-Control:
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, installs]
+                      properties:
+                        id:
+                          type: string
+                          example: raxiomlab.skill.research-brief
+                        installs:
+                          type: integer
+                          minimum: 0
+                          example: 128
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /v1/events/install:
+    post:
+      tags: [events]
+      operationId: recordInstall
+      summary: Count an install
+      description: |
+        Fire-and-forget telemetry. No user id, cookie, email or free-form text is
+        accepted. The IP is hashed with a server salt and the current day, and is
+        never stored raw. Duplicate events for the same item/day/IP are ignored.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstallEvent"
+      responses:
+        "202":
+          description: Accepted (may or may not have incremented the counter)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, counted]
+                properties:
+                  ok: { type: boolean, const: true }
+                  counted:
+                    type: boolean
+                    description: False when this IP already counted for the item today.
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          description: Origin not in ALLOWED_ORIGINS
+        "429":
+          description: Rate limited
+  /v1/submissions:
+    post:
+      tags: [submissions]
+      operationId: createSubmission
+      summary: Submit a public manifest for review
+      description: |
+        A submission is a pointer to an HTTPS `manifest.json`; there is no file
+        upload. Every submission is reviewed by a human before it is listed.
+        The `website` field is a honeypot and must stay empty.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [manifestUrl, contact]
+              properties:
+                manifestUrl:
+                  type: string
+                  format: uri
+                  pattern: '^https://.*manifest\.json$'
+                contact:
+                  type: string
+                  minLength: 3
+                  maxLength: 200
+                  description: Email or profile URL used only to answer the review.
+                notes:
+                  type: string
+                  maxLength: 2000
+                kind:
+                  $ref: "#/components/schemas/Kind"
+                website:
+                  type: string
+                  description: Honeypot. Leave empty.
+      responses:
+        "201":
+          description: Stored as pending
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, status]
+                properties:
+                  id: { type: string, format: uuid }
+                  status: { type: string, const: pending }
+                  review: { type: string }
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "429":
+          description: Rate limited to 3 submissions per IP per day
+    get:
+      tags: [submissions]
+      operationId: listSubmissions
+      summary: List submissions (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected, all]
+            default: pending
+      responses:
+        "200":
+          description: Submissions, newest first
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Submission"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/submissions/{id}/review:
+    post:
+      tags: [submissions]
+      operationId: reviewSubmission
+      summary: Approve or reject a submission (admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [approved, rejected]
+                note:
+                  type: string
+                  maxLength: 1000
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean, const: true }
+                  id: { type: string, format: uuid }
+                  status: { type: string, enum: [approved, rejected] }
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: Not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: "ADMIN_TOKEN secret, sent as `Authorization: Bearer <token>`."
+  responses:
+    BadRequest:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Missing or invalid admin token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Kind:
+      type: string
+      enum: [skill, extension, app, forge]
+    InstallEvent:
+      type: object
+      additionalProperties: false
+      required: [id, version, kind]
+      properties:
+        id:
+          type: string
+          example: raxiomlab.skill.research-brief
+        version:
+          type: string
+          pattern: '^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$'
+        kind:
+          $ref: "#/components/schemas/Kind"
+        platform:
+          type: string
+          enum: [desktop, web, android]
+          default: web
+        ref:
+          type: string
+          maxLength: 32
+          default: store
+          description: Coarse source tag, never a user identifier.
+    Submission:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        manifest_url: { type: string, format: uri }
+        kind: { $ref: "#/components/schemas/Kind" }
+        contact: { type: string }
+        notes: { type: string }
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        review_note: { type: string }
+        created_at: { type: string, format: date-time }
+        reviewed_at: { type: string, format: date-time }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: invalid_event

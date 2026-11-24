@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.skill.release-notes",
+  "kind": "skill",
+  "slug": "release-notes",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "icon": "git",
+  "locales": {
+    "en": {
+      "name": "Release notes writer",
+      "summary": "Turns commits and merged PRs into user-facing release notes, grouped by what changed for people.",
+      "readme": "## What it does\n\nReads the range between two tags (or a set of merged PRs) and writes release notes for the people who use the product — not a commit dump. It separates what users will notice from what only maintainers care about.\n\n## Output structure\n\n- **Highlights** — at most three changes that matter most.\n- **Added / Improved / Fixed** — grouped by user impact.\n- **Breaking changes** — what breaks, who is affected, and the migration step.\n- **Internal** — dependency bumps, refactors and CI noise, collapsed into one line.\n- **Thanks** — outside contributors, when the range shows them.\n\n## How to use it\n\nAsk for a range and an audience:\n\n> Write release notes for v2.4.0..v2.5.0 for self-hosted users. Keep it under 400 words.\n\n## Rules it enforces\n\n- Commit prefixes (`feat`, `fix`, `chore`) are signals, not the final copy.\n- Internal refactors never appear as user-facing improvements.\n- A fix names the symptom the user saw, not the function that changed.\n- Breaking changes always include the migration step.\n- No invented issue numbers or contributor names.\n\n## Permissions\n\nReads the local repository and its git history. No network or credentials; pushing the release stays a separate, explicit step."
+    },
+    "pt": {
+      "name": "Redator de release notes",
+      "summary": "Transforma commits e PRs mesclados em notas de versão para quem usa o produto, agrupadas por impacto.",
+      "readme": "## O que faz\n\nLê o intervalo entre duas tags (ou um conjunto de PRs mesclados) e escreve notas de versão para quem usa o produto — não um despejo de commits. Separa o que as pessoas vão notar do que interessa só a quem mantém o código.\n\n## Estrutura de saída\n\n- **Destaques** — no máximo três mudanças que mais importam.\n- **Adicionado / Melhorado / Corrigido** — agrupado por impacto para o usuário.\n- **Mudanças que quebram** — o que quebra, quem é afetado e o passo de migração.\n- **Interno** — dependências, refatorações e ruído de CI em uma linha.\n- **Agradecimentos** — contribuidores externos, quando o intervalo mostra.\n\n## Como usar\n\nPeça um intervalo e um público:\n\n> Escreva as notas de v2.4.0..v2.5.0 para usuários self-hosted. Mantenha abaixo de 400 palavras.\n\n## Regras que ela impõe\n\n- Prefixos de commit (`feat`, `fix`, `chore`) são sinais, não o texto final.\n- Refatoração interna nunca aparece como melhoria para o usuário.\n- Uma correção nomeia o sintoma que o usuário viu, não a função alterada.\n- Mudanças que quebram sempre incluem o passo de migração.\n- Nada de números de issue ou nomes de contribuidores inventados.\n\n## Permissões\n\nLê o repositório local e o histórico git. Sem rede ou credenciais; publicar a release continua sendo um passo explícito à parte."
+    }
+  },
+  "tags": ["release", "git", "writing", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "declarative",
+    "tools": ["read_file", "git_log", "git_tag", "git_diff"],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "fs.read",
+      "risk": "low",
+      "label": { "en": "Read repository files", "pt": "Ler arquivos do repositório" },
+      "reason": {
+        "en": "Checks the changelog and package versions against the commit range.",
+        "pt": "Confere o changelog e as versões contra o intervalo de commits."
+      }
+    },
+    {
+      "id": "git.read",
+      "risk": "low",
+      "label": { "en": "Read git history", "pt": "Ler histórico git" },
+      "reason": {
+        "en": "Reads tags, commits and merged changes to build the note.",
+        "pt": "Lê tags, commits e mudanças mescladas para montar a nota."
+      }
+    }
+  ],
+  "entry": { "type": "skill", "path": "SKILL.md" },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

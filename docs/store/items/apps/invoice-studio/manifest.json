@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.app.invoice-studio",
+  "kind": "app",
+  "slug": "invoice-studio",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "icon": "receipt",
+  "locales": {
+    "en": {
+      "name": "Invoice Studio",
+      "summary": "Draft invoices with line items, tax and a print-ready PDF — everything stays on this machine.",
+      "readme": "## What it is\n\nInvoice Studio is a small internal app for drafting invoices without opening a spreadsheet. It runs inside AssistIO, in a sandboxed view, with no network access.\n\n## What you can do\n\n- Add line items with description, quantity and unit price.\n- Set currency, tax rate, invoice number, issue date and due date.\n- See subtotal, tax and total recalculated as you type.\n- **Print / Save as PDF** using the browser's print dialog.\n- **Export JSON** to keep a copy or move the draft to another tool.\n- Autosave to this app's local storage, so a reload does not lose the draft.\n\n## Data and privacy\n\n- Nothing is uploaded. There are no analytics, fonts or scripts from the internet.\n- The draft lives in AssistIO's app storage on your machine.\n- Clearing the app's data removes it permanently; export JSON first if you need a copy.\n- Invoices are drafts, not accounting records. Check the numbers before sending.\n\n## Permissions\n\nLocal app storage, clipboard and download access only. No file-system browsing, shell, network or credentials."
+    },
+    "pt": {
+      "name": "Invoice Studio",
+      "summary": "Rascunhe faturas com itens, imposto e PDF pronto para imprimir — tudo fica nesta máquina.",
+      "readme": "## O que é\n\nInvoice Studio é um app interno pequeno para rascunhar faturas sem abrir uma planilha. Roda dentro do AssistIO, em uma visualização isolada, sem acesso à rede.\n\n## O que você pode fazer\n\n- Adicionar itens com descrição, quantidade e preço unitário.\n- Definir moeda, alíquota, número da fatura, data de emissão e vencimento.\n- Ver subtotal, imposto e total recalculados enquanto digita.\n- **Imprimir / Salvar em PDF** pelo diálogo de impressão do navegador.\n- **Exportar JSON** para guardar uma cópia ou levar o rascunho para outra ferramenta.\n- Salvamento automático no armazenamento local do app: recarregar não perde o rascunho.\n\n## Dados e privacidade\n\n- Nada é enviado. Não há analytics, fontes ou scripts da internet.\n- O rascunho fica no armazenamento de apps do AssistIO, na sua máquina.\n- Limpar os dados do app apaga tudo; exporte o JSON antes se precisar de cópia.\n- Faturas são rascunhos, não registros contábeis. Confira os números antes de enviar.\n\n## Permissões\n\nApenas armazenamento local do app, área de transferência e download. Sem acesso a arquivos, shell, rede ou credenciais."
+    }
+  },
+  "tags": ["finance", "productivity", "local-first", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "browser",
+    "tools": [],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "app.storage",
+      "risk": "low",
+      "label": { "en": "Store drafts locally", "pt": "Armazenar rascunhos localmente" },
+      "reason": {
+        "en": "Autosaves the invoice draft in this app's sandboxed storage.",
+        "pt": "Salva automaticamente o rascunho no armazenamento isolado do app."
+      }
+    },
+    {
+      "id": "clipboard.write",
+      "risk": "low",
+      "label": { "en": "Copy totals", "pt": "Copiar totais" },
+      "reason": {
+        "en": "Lets you copy the summary as text.",
+        "pt": "Permite copiar o resumo como texto."
+      }
+    },
+    {
+      "id": "downloads.write",
+      "risk": "low",
+      "label": { "en": "Export a JSON copy", "pt": "Exportar uma cópia JSON" },
+      "reason": {
+        "en": "Creates a local JSON file when you choose Export.",
+        "pt": "Cria um arquivo JSON local quando você escolhe Exportar."
+      }
+    }
+  ],
+  "entry": {
+    "type": "app",
+    "path": "app/index.html",
+    "width": 1120,
+    "height": 780,
+    "sandbox": "strict"
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

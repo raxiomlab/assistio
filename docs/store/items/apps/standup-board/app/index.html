@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>Standup Board</title>
+<style>
+  :root{
+    --bg:#0b1016; --panel:#111926; --panel-2:#16202f; --line:#243244;
+    --txt:#e6edf7; --muted:#93a4b8; --accent:#8fb8ff;
+    --yesterday:#8fb8ff; --today:#6ee7b7; --blocker:#fca5a5;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    background:radial-gradient(900px 420px at 88% -12%,rgba(157,140,255,.12),transparent 62%),var(--bg);
+    color:var(--txt); font:14px/1.55 "Segoe UI",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{max-width:1120px;margin:0 auto;padding:24px 22px 64px}
+  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;
+    background:linear-gradient(135deg,#6ee7b7,#8fb8ff);color:#06101f}
+  h1{font-size:19px;margin:0;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:12.5px}
+  .head-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  button{font:inherit;color:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel-2);padding:8px 13px;transition:background .15s,border-color .15s}
+  button:hover{background:#1c293b;border-color:#31445c}
+  button.primary{background:linear-gradient(120deg,#8fb8ff,#c4b5fd);border-color:transparent;color:#06101f;font-weight:700}
+  button.ghost{background:transparent}
+  input[type=text],input[type=date]{font:inherit;color:var(--txt);background:#0d1521;border:1px solid var(--line);
+    border-radius:9px;padding:8px 10px;outline:none;width:100%}
+  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(143,184,255,.12)}
+  .who{display:flex;gap:10px;align-items:end;margin-bottom:16px;max-width:520px}
+  .who label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:5px}
+  .who > div{flex:1}
+  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:900px){.board{grid-template-columns:1fr}}
+  .col{background:rgba(17,25,38,.86);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;min-height:280px}
+  .col h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0;padding:14px 16px 0;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .col h2 i{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .col[data-sec=yesterday] h2 i{background:var(--yesterday);box-shadow:0 0 12px var(--yesterday)}
+  .col[data-sec=today] h2 i{background:var(--today);box-shadow:0 0 12px var(--today)}
+  .col[data-sec=blockers] h2 i{background:var(--blocker);box-shadow:0 0 12px var(--blocker)}
+  .notes{list-style:none;margin:0;padding:10px 12px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .note{display:flex;gap:7px;align-items:center;background:#0d1521;border:1px solid var(--line);border-radius:9px;padding:4px 4px 4px 10px}
+  .note input{border:0;background:transparent;padding:4px 0;box-shadow:none}
+  .note input:focus{box-shadow:none}
+  .note button{border:0;background:transparent;color:var(--muted);padding:3px 7px;font-size:16px;line-height:1}
+  .note button:hover{color:var(--blocker);background:transparent}
+  .add{display:flex;gap:7px;padding:10px 12px;border-top:1px solid var(--line)}
+  .add input{flex:1}
+  .add button{padding:8px 11px}
+  .empty{color:var(--muted);font-size:12.5px;padding:6px 2px;font-style:italic}
+  .foot{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px;color:var(--muted);font-size:12px}
+  .foot .right{margin-left:auto;display:flex;gap:8px}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+    background:#1b2940;border:1px solid #31445c;padding:10px 16px;border-radius:999px;font-size:13px;
+    transition:opacity .2s,transform .2s;z-index:20}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .count{font-size:11px;color:var(--muted);font-weight:600;margin-left:auto}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <span class="mark" aria-hidden="true">SB</span>
+    <div>
+      <h1>Standup Board</h1>
+      <div class="sub">Yesterday, today, blockers. Local, async, copy-ready.</div>
+    </div>
+    <div class="head-actions">
+      <input type="date" id="date" aria-label="Board date" style="width:auto">
+      <button type="button" class="primary" id="btnCopy">Copy Markdown</button>
+      <button type="button" class="ghost" id="btnDownload">Download .md</button>
+    </div>
+  </header>
+
+  <div class="who">
+    <div>
+      <label for="who">Writing as</label>
+      <input type="text" id="who" placeholder="Your name (saved locally)">
+    </div>
+  </div>
+
+  <main class="board" id="board">
+    <section class="col" data-sec="yesterday">
+      <h2><i aria-hidden="true"></i>Yesterday <span class="count" data-count></span></h2>
+      <ul class="notes" data-notes></ul>
+      <div class="add">
+        <input type="text" data-add placeholder="What moved yesterday?" aria-label="Add yesterday note">
+        <button type="button" data-add-btn>Add</button>
+      </div>
+    </section>
+    <section class="col" data-sec="today">
+      <h2><i aria-hidden="true"></i>Today <span class="count" data-count></span></h2>
+      <ul class="notes" data-notes></ul>
+      <div class="add">
+        <input type="text" data-add placeholder="What is the plan today?" aria-label="Add today note">
+        <button type="button" data-add-btn>Add</button>
+      </div>
+    </section>
+    <section class="col" data-sec="blockers">
+      <h2><i aria-hidden="true"></i>Blockers <span class="count" data-count></span></h2>
+      <ul class="notes" data-notes></ul>
+      <div class="add">
+        <input type="text" data-add placeholder="What is stuck, and why?" aria-label="Add blocker note">
+        <button type="button" data-add-btn>Add</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="foot">
+    <span>Autosaved on this machine. No account, no server.</span>
+    <span class="right"><button type="button" class="ghost" id="btnClear">Clear this day</button></span>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "assistio.standup-board.v1";
+  var SECTIONS = ["yesterday","today","blockers"];
+  var $ = function(s){ return document.querySelector(s); };
+  var state = load();
+  var saveTimer = 0;
+
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function blank(){ return { author:"", days:{} }; }
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(!raw) return blank();
+      var p = JSON.parse(raw);
+      if(!p || typeof p !== "object") return blank();
+      if(!p.days || typeof p.days !== "object") p.days = {};
+      if(typeof p.author !== "string") p.author = "";
+      return p;
+    }catch(e){ return blank(); }
+  }
+  function dayKey(){ return $("#date").value || today(); }
+  function day(){
+    var k = dayKey();
+    if(!state.days[k]) state.days[k] = { yesterday:[], today:[], blockers:[] };
+    SECTIONS.forEach(function(s){ if(!Array.isArray(state.days[k][s])) state.days[k][s] = []; });
+    return state.days[k];
+  }
+  function saveSoon(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    }, 220);
+  }
+  function toast(msg){
+    var t=$("#toast"); t.textContent=msg; t.classList.add("on");
+    clearTimeout(t._to); t._to=setTimeout(function(){ t.classList.remove("on"); },1900);
+  }
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+
+  function render(){
+    SECTIONS.forEach(function(sec){
+      var col = document.querySelector('.col[data-sec="'+sec+'"]');
+      var list = col.querySelector("[data-notes]");
+      list.textContent = "";
+      var notes = day()[sec];
+      col.querySelector("[data-count]").textContent = notes.length ? "("+notes.length+")" : "";
+      if(!notes.length){
+        var e = document.createElement("li");
+        e.className = "empty";
+        e.textContent = "Nothing yet.";
+        list.appendChild(e);
+        return;
+      }
+      notes.forEach(function(n){
+        var li = document.createElement("li");
+        li.className = "note";
+        var input = document.createElement("input");
+        input.type = "text";
+        input.value = n.text;
+        input.setAttribute("data-note", n.id);
+        input.setAttribute("aria-label", "Edit note");
+        var rm = document.createElement("button");
+        rm.type = "button";
+        rm.textContent = "×";
+        rm.title = "Remove note";
+        rm.setAttribute("data-del", n.id);
+        rm.setAttribute("aria-label", "Remove note");
+        li.appendChild(input); li.appendChild(rm);
+        list.appendChild(li);
+      });
+    });
+    document.getElementById("who").value = state.author || "";
+  }
+
+  function addNote(sec, text){
+    text = (text||"").trim();
+    if(!text) return;
+    day()[sec].push({ id:uid(), text:text, who:state.author || "" });
+    saveSoon(); render();
+  }
+
+  function summary(){
+    var d = day();
+    var lines = ["# Standup — " + dayKey(), ""];
+    if(state.author) lines.push("_Written by " + state.author + "_", "");
+    var titles = { yesterday:"Yesterday", today:"Today", blockers:"Blockers" };
+    SECTIONS.forEach(function(sec){
+      lines.push("## " + titles[sec]);
+      if(!d[sec].length) lines.push("- —");
+      else d[sec].forEach(function(n){
+        lines.push("- " + (n.who ? "**" + n.who + ":** " : "") + n.text);
+      });
+      lines.push("");
+    });
+    return lines.join("\n");
+  }
+
+  function copy(text){
+    function fallback(){
+      var ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta);
+      ta.select(); try{ document.execCommand("copy"); toast("Copied"); }catch(e){ toast("Could not copy"); }
+      ta.remove();
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ toast("Markdown copied"); }, fallback);
+    } else fallback();
+  }
+  function download(name, text){
+    var blob = new Blob([text], {type:"text/markdown;charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+
+  document.getElementById("date").value = today();
+  document.getElementById("date").addEventListener("change", function(){ render(); saveSoon(); });
+
+  document.getElementById("who").addEventListener("input", function(e){
+    state.author = e.target.value;
+    saveSoon();
+  });
+
+  document.addEventListener("click", function(e){
+    var addBtn = e.target.closest("[data-add-btn]");
+    if(addBtn){
+      var col = addBtn.closest(".col");
+      var input = col.querySelector("[data-add]");
+      addNote(col.getAttribute("data-sec"), input.value);
+      input.value = ""; input.focus();
+      return;
+    }
+    var del = e.target.closest("[data-del]");
+    if(del){
+      var sec = del.closest(".col").getAttribute("data-sec");
+      var id = del.getAttribute("data-del");
+      day()[sec] = day()[sec].filter(function(n){ return n.id !== id; });
+      saveSoon(); render(); return;
+    }
+    if(e.target.closest("#btnCopy")){ copy(summary()); return; }
+    if(e.target.closest("#btnDownload")){
+      download("standup-" + dayKey() + ".md", summary());
+      toast("Markdown downloaded"); return;
+    }
+    if(e.target.closest("#btnClear")){
+      if(!confirm("Clear every note for " + dayKey() + "?")) return;
+      state.days[dayKey()] = { yesterday:[], today:[], blockers:[] };
+      saveSoon(); render(); toast("Day cleared"); return;
+    }
+  });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Enter" && e.target.matches("[data-add]")){
+      e.preventDefault();
+      var col = e.target.closest(".col");
+      addNote(col.getAttribute("data-sec"), e.target.value);
+      e.target.value = "";
+    }
+  });
+
+  document.addEventListener("input", function(e){
+    var id = e.target.getAttribute && e.target.getAttribute("data-note");
+    if(!id) return;
+    var sec = e.target.closest(".col").getAttribute("data-sec");
+    var note = day()[sec].filter(function(n){ return n.id === id; })[0];
+    if(note){ note.text = e.target.value; saveSoon(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

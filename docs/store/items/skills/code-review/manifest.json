@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.skill.code-review",
+  "kind": "skill",
+  "slug": "code-review",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "featured": true,
+  "icon": "code",
+  "locales": {
+    "en": {
+      "name": "Senior code review",
+      "summary": "Reviews a diff like a staff engineer: severity, evidence, tests and the smallest safe fix.",
+      "readme": "## What it does\n\nTurns a diff or a branch into a review that a maintainer can act on. Findings are ranked by severity, tied to a line, and paired with the smallest fix — not a rewrite.\n\n## Review sequence\n\n1. **Read the intent** — commit messages, PR description, linked issue.\n2. **Map the blast radius** — who calls the changed code, what contracts move.\n3. **Check correctness** — edge cases, error paths, concurrency, off-by-one, nulls.\n4. **Check safety** — secrets, injection, authorization, unsafe defaults, data loss.\n5. **Check operability** — logs, metrics, rollback, migrations.\n6. **Check tests** — does the change prove the behaviour it claims?\n\n## Output contract\n\n- **Verdict** — approve / approve with nits / request changes.\n- **Blocking findings** — `file:line`, what breaks, a concrete failure scenario, the fix.\n- **Non-blocking notes** — naming, structure, readability.\n- **Test gaps** — what is missing and the smallest test that would catch it.\n- **Questions** — only where the answer changes the verdict.\n\n## What it will not do\n\n- It does not commit, push or rewrite code unless you explicitly ask.\n- It does not comment on style that the project's formatter already owns.\n- It does not pad the review: if the diff is clean, it says so in two lines.\n\n## Permissions\n\nReads files and git history in the current workspace. No network, no credentials, and no write access unless you grant it."
+    },
+    "pt": {
+      "name": "Revisão de código sênior",
+      "summary": "Revisa um diff como um staff engineer: severidade, evidência, testes e a menor correção segura.",
+      "readme": "## O que faz\n\nTransforma um diff ou branch em uma revisão acionável para quem mantém o código. Os achados são ordenados por severidade, amarrados a uma linha e acompanhados da menor correção — não de uma reescrita.\n\n## Sequência de revisão\n\n1. **Leia a intenção** — mensagens de commit, descrição do PR, issue vinculada.\n2. **Mapeie o raio de impacto** — quem chama o código alterado, quais contratos mudam.\n3. **Verifique correção** — casos de borda, caminhos de erro, concorrência, off-by-one, nulos.\n4. **Verifique segurança** — segredos, injeção, autorização, padrões inseguros, perda de dados.\n5. **Verifique operação** — logs, métricas, rollback, migrações.\n6. **Verifique testes** — a mudança prova o comportamento que promete?\n\n## Contrato de saída\n\n- **Veredito** — aprovar / aprovar com ajustes / pedir mudanças.\n- **Achados bloqueantes** — `arquivo:linha`, o que quebra, um cenário concreto de falha, a correção.\n- **Notas não bloqueantes** — nomes, estrutura, legibilidade.\n- **Lacunas de teste** — o que falta e o menor teste que pegaria o problema.\n- **Perguntas** — só quando a resposta muda o veredito.\n\n## O que ele não faz\n\n- Não faz commit, push nem reescreve código sem você pedir.\n- Não comenta estilo que o formatador do projeto já governa.\n- Não enche a revisão: se o diff está limpo, diz isso em duas linhas.\n\n## Permissões\n\nLê arquivos e histórico git do workspace atual. Sem rede, sem credenciais e sem escrita, a menos que você conceda."
+    }
+  },
+  "tags": ["coding", "review", "git", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "declarative",
+    "tools": ["read_file", "list_files", "git_diff", "git_log"],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "fs.read",
+      "risk": "medium",
+      "label": { "en": "Read workspace files", "pt": "Ler arquivos do workspace" },
+      "reason": {
+        "en": "Needs the changed files and their callers to judge the diff.",
+        "pt": "Precisa dos arquivos alterados e de quem os chama para julgar o diff."
+      }
+    },
+    {
+      "id": "git.read",
+      "risk": "low",
+      "label": { "en": "Read git history", "pt": "Ler histórico git" },
+      "reason": {
+        "en": "Uses commits and branch context to understand intent.",
+        "pt": "Usa commits e o contexto da branch para entender a intenção."
+      }
+    }
+  ],
+  "entry": { "type": "skill", "path": "SKILL.md" },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

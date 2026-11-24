@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "kinds": [
+    {
+      "id": "skill",
+      "icon": "sparkles",
+      "name": { "en": "Skills", "pt": "Skills" },
+      "blurb": {
+        "en": "Instruction packs that teach the agent a repeatable way to do a job.",
+        "pt": "Pacotes de instrução que ensinam o agente um jeito repetível de fazer um trabalho."
+      }
+    },
+    {
+      "id": "extension",
+      "icon": "puzzle",
+      "name": { "en": "Extensions", "pt": "Extensões" },
+      "blurb": {
+        "en": "Declarative packs that add commands, agent presets, prompts and appearance to AssistIO.",
+        "pt": "Pacotes declarativos que adicionam comandos, agentes, prompts e aparência ao AssistIO."
+      }
+    },
+    {
+      "id": "app",
+      "icon": "grid",
+      "name": { "en": "Internal apps", "pt": "Apps internos" },
+      "blurb": {
+        "en": "Small local-first apps that open inside AssistIO and keep their data on your machine.",
+        "pt": "Apps pequenos e local-first que abrem dentro do AssistIO e mantêm os dados na sua máquina."
+      }
+    },
+    {
+      "id": "forge",
+      "icon": "bolt",
+      "name": { "en": "Forge plugins", "pt": "Plugins Forge" },
+      "blurb": {
+        "en": "Declarative tool capabilities built with Forge — no executable code, explicit permissions.",
+        "pt": "Capacidades de ferramenta declarativas feitas com Forge — sem código executável, permissões explícitas."
+      }
+    }
+  ],
+  "tags": [
+    { "id": "research", "name": { "en": "Research", "pt": "Pesquisa" } },
+    { "id": "writing", "name": { "en": "Writing", "pt": "Escrita" } },
+    { "id": "coding", "name": { "en": "Coding", "pt": "Código" } },
+    { "id": "review", "name": { "en": "Review", "pt": "Revisão" } },
+    { "id": "git", "name": { "en": "Git & GitHub", "pt": "Git e GitHub" } },
+    { "id": "release", "name": { "en": "Releases", "pt": "Lançamentos" } },
+    { "id": "productivity", "name": { "en": "Productivity", "pt": "Produtividade" } },
+    { "id": "team", "name": { "en": "Team", "pt": "Equipe" } },
+    { "id": "finance", "name": { "en": "Finance", "pt": "Financeiro" } },
+    { "id": "data", "name": { "en": "Data", "pt": "Dados" } },
+    { "id": "web", "name": { "en": "Web", "pt": "Web" } },
+    { "id": "automation", "name": { "en": "Automation", "pt": "Automação" } },
+    { "id": "local-first", "name": { "en": "Local-first", "pt": "Local-first" } },
+    { "id": "no-credentials", "name": { "en": "No credentials", "pt": "Sem credenciais" } },
+    { "id": "starter", "name": { "en": "Starter", "pt": "Iniciante" } }
+  ]
+}

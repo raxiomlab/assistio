@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.forge.csv-profile",
+  "kind": "forge",
+  "slug": "csv-profile",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "icon": "table",
+  "locales": {
+    "en": {
+      "name": "CSV profile",
+      "summary": "A Forge tool that profiles a local CSV and flags type, null and distribution problems.",
+      "readme": "## What it is\n\n`csv_profile` is a Forge plugin for the first ten minutes with an unfamiliar CSV. It reads the file locally, profiles every column, and returns a compact report: types, null rates, distinct counts, ranges and likely data-quality issues.\n\n## Input\n\n| Field | Type | Notes |\n|---|---|---|\n| `path` | string | CSV inside the workspace. |\n| `delimiter` | string | `,` `;` `\\t` or `|`. Default `,`. |\n| `question` | string | Optional: what you want to learn from the data. |\n\n## What it returns\n\n- Row and column counts, plus a preview of five rows.\n- Per column: inferred type, null rate, distinct count, min/max or top values.\n- Suspected problems: mixed date formats, numeric columns stored as text, constant columns, duplicate rows, suspicious outliers.\n- Three suggested next questions, grounded in the profile.\n\n## How it is built\n\nFive declarative steps — read, parse, profile, narrate, format. No executable code is shipped with the plugin.\n\n## Boundaries\n\n- Reads one file you name, inside the workspace. Nothing is uploaded.\n- The whole file is not sent to the model; only the computed profile and a five-row preview.\n- It does not modify the CSV or write files.\n\n## Permissions\n\nWorkspace file read only."
+    },
+    "pt": {
+      "name": "Perfil de CSV",
+      "summary": "Uma ferramenta Forge que analisa um CSV local e aponta problemas de tipo, nulos e distribuição.",
+      "readme": "## O que é\n\n`csv_profile` é um plugin Forge para os primeiros dez minutos com um CSV desconhecido. Ele lê o arquivo localmente, analisa cada coluna e devolve um relatório compacto: tipos, taxa de nulos, contagens distintas, intervalos e prováveis problemas de qualidade.\n\n## Entrada\n\n| Campo | Tipo | Observação |\n|---|---|---|\n| `path` | string | CSV dentro do workspace. |\n| `delimiter` | string | `,` `;` `\\t` ou `|`. Padrão `,`. |\n| `question` | string | Opcional: o que você quer descobrir nos dados. |\n\n## O que retorna\n\n- Contagem de linhas e colunas, mais uma prévia de cinco linhas.\n- Por coluna: tipo inferido, taxa de nulos, distintos, mínimo/máximo ou valores mais frequentes.\n- Problemas suspeitos: formatos de data misturados, números gravados como texto, colunas constantes, linhas duplicadas, outliers suspeitos.\n- Três próximas perguntas sugeridas, fundamentadas no perfil.\n\n## Como é construído\n\nCinco passos declarativos — ler, interpretar, analisar, narrar, formatar. Nenhum código executável acompanha o plugin.\n\n## Limites\n\n- Lê um arquivo que você indicar, dentro do workspace. Nada é enviado para fora.\n- O arquivo inteiro não vai ao modelo; apenas o perfil calculado e uma prévia de cinco linhas.\n- Não modifica o CSV nem grava arquivos.\n\n## Permissões\n\nApenas leitura de arquivos do workspace."
+    }
+  },
+  "tags": ["data", "coding", "local-first", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "declarative",
+    "tools": [],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "fs.read",
+      "risk": "medium",
+      "label": { "en": "Read one CSV in the workspace", "pt": "Ler um CSV no workspace" },
+      "reason": {
+        "en": "Opens only the path passed to the tool, capped at 2 MB.",
+        "pt": "Abre apenas o caminho passado para a ferramenta, limitado a 2 MB."
+      }
+    }
+  ],
+  "entry": { "type": "forge" },
+  "definition": {
+    "tool": {
+      "name": "csv_profile",
+      "description": {
+        "en": "Profile a local CSV file and return types, null rates, distributions and data-quality flags.",
+        "pt": "Analisa um CSV local e devolve tipos, taxa de nulos, distribuições e alertas de qualidade."
+      },
+      "input": {
+        "type": "object",
+        "required": ["path"],
+        "additionalProperties": false,
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "delimiter": { "enum": [",", ";", "\t", "|"], "default": "," },
+          "question": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+    "steps": [
+      {
+        "id": "read",
+        "type": "file.read",
+        "path": "{{input.path}}",
+        "maxBytes": 2000000,
+        "encoding": "utf-8"
+      },
+      {
+        "id": "parse",
+        "type": "csv.parse",
+        "input": "{{steps.read.text}}",
+        "delimiter": "{{input.delimiter}}",
+        "hasHeader": true,
+        "maxRows": 200000
+      },
+      {
+        "id": "profile",
+        "type": "dataset.profile",
+        "rows": "{{steps.parse.rows}}",
+        "sampleRows": 5,
+        "maxTopValues": 5
+      },
+      {
+        "id": "narrate",
+        "type": "prompt",
+        "model": "inherit",
+        "prompt": "You are a careful data analyst. Using only the computed profile in {{steps.profile.json}} and the five-row preview, write a short CSV profile report. Do not invent values or claim causal relationships. If the user question is set, answer it only where the profile supports the answer. Question: {{input.question}}"
+      },
+      {
+        "id": "out",
+        "type": "template",
+        "template": "## CSV profile — {{input.path}}\n\n{{steps.narrate.text}}\n\n### Column detail\n\n{{steps.profile.table}}"
+      }
+    ],
+    "output": "{{steps.out.text}}",
+    "timeoutMs": 45000
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "id": "raxiomlab.app.standup-board",
+  "kind": "app",
+  "slug": "standup-board",
+  "version": "1.0.0",
+  "channel": "stable",
+  "publisher": {
+    "id": "raxiomlab",
+    "name": "RaxiomLab",
+    "url": "https://github.com/raxiomlab",
+    "verified": true
+  },
+  "license": "Proprietary-Free-Use",
+  "createdAt": "2026-11-23",
+  "updatedAt": "2026-11-23",
+  "icon": "users",
+  "locales": {
+    "en": {
+      "name": "Standup Board",
+      "summary": "A local async standup: yesterday, today and blockers, copyable as Markdown.",
+      "readme": "## What it is\n\nStandup Board replaces the chat message that gets lost. Each person writes three short lines — yesterday, today, blockers — and the board compiles a clean Markdown summary for the team channel.\n\n## What you can do\n\n- Add a note per person and per section.\n- Remove or edit a note inline.\n- Switch the date to prepare tomorrow's board.\n- **Copy as Markdown** in one click.\n- Autosave per day in local storage.\n\n## Intended use\n\n- Small teams that do async standups.\n- A quick pre-meeting snapshot for a synchronous standup.\n- A personal log of what moved and what blocked.\n\n## Data and privacy\n\n- No account, no server, no network. Everything stays in this app's storage.\n- Notes are not encrypted at rest beyond what the operating system provides.\n- Clearing app data removes the board; use Copy as Markdown to keep a copy.\n\n## Permissions\n\nLocal app storage, clipboard and download access only."
+    },
+    "pt": {
+      "name": "Standup Board",
+      "summary": "Um standup assíncrono local: ontem, hoje e bloqueios, copiável em Markdown.",
+      "readme": "## O que é\n\nStandup Board substitui a mensagem de chat que se perde. Cada pessoa escreve três linhas curtas — ontem, hoje, bloqueios — e o quadro monta um resumo Markdown limpo para o canal do time.\n\n## O que você pode fazer\n\n- Adicionar uma nota por pessoa e por seção.\n- Remover ou editar uma nota na própria linha.\n- Trocar a data para preparar o quadro de amanhã.\n- **Copiar como Markdown** em um clique.\n- Salvamento automático por dia no armazenamento local.\n\n## Uso pretendido\n\n- Times pequenos que fazem standup assíncrono.\n- Um retrato rápido antes de um standup síncrono.\n- Um registro pessoal do que avançou e do que travou.\n\n## Dados e privacidade\n\n- Sem conta, sem servidor, sem rede. Tudo fica no armazenamento do app.\n- As notas não têm criptografia extra além da que o sistema operacional oferece.\n- Limpar os dados apaga o quadro; use Copiar como Markdown para guardar uma cópia.\n\n## Permissões\n\nApenas armazenamento local, área de transferência e download."
+    }
+  },
+  "tags": ["team", "productivity", "local-first", "no-credentials"],
+  "platforms": ["desktop", "web"],
+  "requires": {
+    "assistio": ">=0.9.0",
+    "network": false,
+    "runtime": "browser",
+    "tools": [],
+    "credentials": []
+  },
+  "permissions": [
+    {
+      "id": "app.storage",
+      "risk": "low",
+      "label": { "en": "Store notes locally", "pt": "Armazenar notas localmente" },
+      "reason": {
+        "en": "Autosaves each day's board in the app sandbox.",
+        "pt": "Salva automaticamente o quadro de cada dia no sandbox do app."
+      }
+    },
+    {
+      "id": "clipboard.write",
+      "risk": "low",
+      "label": { "en": "Copy the summary", "pt": "Copiar o resumo" },
+      "reason": {
+        "en": "Copies the Markdown summary for your team channel.",
+        "pt": "Copia o resumo Markdown para o canal do time."
+      }
+    },
+    {
+      "id": "downloads.write",
+      "risk": "low",
+      "label": { "en": "Export Markdown", "pt": "Exportar Markdown" },
+      "reason": {
+        "en": "Lets you save the board as a .md file.",
+        "pt": "Permite salvar o quadro como arquivo .md."
+      }
+    }
+  ],
+  "entry": {
+    "type": "app",
+    "path": "app/index.html",
+    "width": 1100,
+    "height": 760,
+    "sandbox": "strict"
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-23",
+      "notes": {
+        "en": "First public release.",
+        "pt": "Primeira versão pública."
+      }
+    }
+  ]
+}

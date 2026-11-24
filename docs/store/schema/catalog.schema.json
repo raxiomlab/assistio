@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assistio.dev/store/schema/catalog.schema.json",
+  "title": "AssistIO Store catalog",
+  "description": "Generated index. The website and the AssistIO app both read this file; per-item manifests at `path` are the source of truth.",
+  "type": "object",
+  "required": ["schemaVersion", "generatedAt", "channel", "kinds", "tags", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "channel": { "enum": ["stable", "beta"] },
+    "kinds": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["id", "icon", "name", "blurb"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "enum": ["skill", "extension", "app", "forge"] },
+          "icon": { "type": "string" },
+          "name": { "type": "object", "required": ["en"], "additionalProperties": { "type": "string" } },
+          "blurb": { "type": "object", "required": ["en"], "additionalProperties": { "type": "string" } }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "object", "required": ["en"], "additionalProperties": { "type": "string" } }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "slug",
+          "version",
+          "name",
+          "summary",
+          "tags",
+          "platforms",
+          "publisher",
+          "license",
+          "verified",
+          "featured",
+          "path",
+          "sha256",
+          "size",
+          "files",
+          "updatedAt"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "enum": ["skill", "extension", "app", "forge"] },
+          "slug": { "type": "string" },
+          "version": { "type": "string" },
+          "channel": { "enum": ["stable", "beta", "nightly"] },
+          "name": { "type": "object", "required": ["en"], "additionalProperties": { "type": "string" } },
+          "summary": { "type": "object", "required": ["en"], "additionalProperties": { "type": "string" } },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "platforms": { "type": "array", "items": { "type": "string" } },
+          "publisher": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "url": { "type": "string" },
+              "verified": { "type": "boolean" }
+            }
+          },
+          "license": { "type": "string" },
+          "icon": { "type": "string" },
+          "verified": { "type": "boolean" },
+          "featured": { "type": "boolean" },
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "size": { "type": "integer", "minimum": 0 },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["path", "sha256", "size"],
+              "additionalProperties": false,
+              "properties": {
+                "path": { "type": "string" },
+                "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                "size": { "type": "integer", "minimum": 0 }
+              }
+            }
+          },
+          "updatedAt": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}

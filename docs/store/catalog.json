@@ -1,0 +1,556 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-23T23:09:43Z",
+  "channel": "stable",
+  "kinds": [
+    {
+      "id": "skill",
+      "icon": "sparkles",
+      "name": {
+        "en": "Skills",
+        "pt": "Skills"
+      },
+      "blurb": {
+        "en": "Instruction packs that teach the agent a repeatable way to do a job.",
+        "pt": "Pacotes de instrução que ensinam o agente um jeito repetível de fazer um trabalho."
+      }
+    },
+    {
+      "id": "extension",
+      "icon": "puzzle",
+      "name": {
+        "en": "Extensions",
+        "pt": "Extensões"
+      },
+      "blurb": {
+        "en": "Declarative packs that add commands, agent presets, prompts and appearance to AssistIO.",
+        "pt": "Pacotes declarativos que adicionam comandos, agentes, prompts e aparência ao AssistIO."
+      }
+    },
+    {
+      "id": "app",
+      "icon": "grid",
+      "name": {
+        "en": "Internal apps",
+        "pt": "Apps internos"
+      },
+      "blurb": {
+        "en": "Small local-first apps that open inside AssistIO and keep their data on your machine.",
+        "pt": "Apps pequenos e local-first que abrem dentro do AssistIO e mantêm os dados na sua máquina."
+      }
+    },
+    {
+      "id": "forge",
+      "icon": "bolt",
+      "name": {
+        "en": "Forge plugins",
+        "pt": "Plugins Forge"
+      },
+      "blurb": {
+        "en": "Declarative tool capabilities built with Forge — no executable code, explicit permissions.",
+        "pt": "Capacidades de ferramenta declarativas feitas com Forge — sem código executável, permissões explícitas."
+      }
+    }
+  ],
+  "tags": [
+    {
+      "id": "research",
+      "name": {
+        "en": "Research",
+        "pt": "Pesquisa"
+      }
+    },
+    {
+      "id": "writing",
+      "name": {
+        "en": "Writing",
+        "pt": "Escrita"
+      }
+    },
+    {
+      "id": "coding",
+      "name": {
+        "en": "Coding",
+        "pt": "Código"
+      }
+    },
+    {
+      "id": "review",
+      "name": {
+        "en": "Review",
+        "pt": "Revisão"
+      }
+    },
+    {
+      "id": "git",
+      "name": {
+        "en": "Git & GitHub",
+        "pt": "Git e GitHub"
+      }
+    },
+    {
+      "id": "release",
+      "name": {
+        "en": "Releases",
+        "pt": "Lançamentos"
+      }
+    },
+    {
+      "id": "productivity",
+      "name": {
+        "en": "Productivity",
+        "pt": "Produtividade"
+      }
+    },
+    {
+      "id": "team",
+      "name": {
+        "en": "Team",
+        "pt": "Equipe"
+      }
+    },
+    {
+      "id": "finance",
+      "name": {
+        "en": "Finance",
+        "pt": "Financeiro"
+      }
+    },
+    {
+      "id": "data",
+      "name": {
+        "en": "Data",
+        "pt": "Dados"
+      }
+    },
+    {
+      "id": "web",
+      "name": {
+        "en": "Web",
+        "pt": "Web"
+      }
+    },
+    {
+      "id": "automation",
+      "name": {
+        "en": "Automation",
+        "pt": "Automação"
+      }
+    },
+    {
+      "id": "local-first",
+      "name": {
+        "en": "Local-first",
+        "pt": "Local-first"
+      }
+    },
+    {
+      "id": "no-credentials",
+      "name": {
+        "en": "No credentials",
+        "pt": "Sem credenciais"
+      }
+    },
+    {
+      "id": "starter",
+      "name": {
+        "en": "Starter",
+        "pt": "Iniciante"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "raxiomlab.skill.research-brief",
+      "kind": "skill",
+      "slug": "research-brief",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Deep research brief",
+        "pt": "Briefing de pesquisa profunda"
+      },
+      "summary": {
+        "en": "Turn a question into a sourced brief with confidence levels, contradictions and open questions.",
+        "pt": "Transforma uma pergunta em um briefing com fontes, nível de confiança, contradições e lacunas."
+      },
+      "tags": [
+        "research",
+        "writing",
+        "web",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web",
+        "android"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "search",
+      "verified": true,
+      "featured": true,
+      "path": "items/skills/research-brief/manifest.json",
+      "sha256": "5913be61f7cc0fd3562d908157dbe0f051da3c622157525d37fb5fc9cb12d420",
+      "size": 4713,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "f7dfffeaaa7c5c744df515d573a5294504202f8eb6307c85438c079ea5921885",
+          "size": 1815
+        }
+      ],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.skill.code-review",
+      "kind": "skill",
+      "slug": "code-review",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Senior code review",
+        "pt": "Revisão de código sênior"
+      },
+      "summary": {
+        "en": "Reviews a diff like a staff engineer: severity, evidence, tests and the smallest safe fix.",
+        "pt": "Revisa um diff como um staff engineer: severidade, evidência, testes e a menor correção segura."
+      },
+      "tags": [
+        "coding",
+        "review",
+        "git",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "code",
+      "verified": true,
+      "featured": true,
+      "path": "items/skills/code-review/manifest.json",
+      "sha256": "94f7bbbbb988dd9a7c8cd1a8e7e6304e697be70570c829c770bdf92bb7af1cb7",
+      "size": 5049,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d179b3b6dc9e20892f17f1cfc51aaac1c7b04354cb5b80a483216ade09c56be5",
+          "size": 1929
+        }
+      ],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.extension.dev-desk",
+      "kind": "extension",
+      "slug": "dev-desk",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Dev Desk",
+        "pt": "Dev Desk"
+      },
+      "summary": {
+        "en": "Three commands, one staff-engineer agent and a prompt shelf for planning, reviewing and shipping.",
+        "pt": "Três comandos, um agente staff engineer e uma prateleira de prompts para planejar, revisar e lançar."
+      },
+      "tags": [
+        "coding",
+        "productivity",
+        "review",
+        "starter",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "terminal",
+      "verified": true,
+      "featured": true,
+      "path": "items/extensions/dev-desk/manifest.json",
+      "sha256": "bdbee8de99c871abb65ae969e32810fbbeafefcb0108d4230480b0c110b906a1",
+      "size": 8779,
+      "files": [],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.forge.feed-digest",
+      "kind": "forge",
+      "slug": "feed-digest",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Feed digest",
+        "pt": "Digest de feeds"
+      },
+      "summary": {
+        "en": "A Forge tool that reads RSS/Atom feeds and returns a ranked, deduplicated digest.",
+        "pt": "Uma ferramenta Forge que lê feeds RSS/Atom e devolve um digest curto, ranqueado e sem duplicatas."
+      },
+      "tags": [
+        "web",
+        "automation",
+        "research",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "rss",
+      "verified": true,
+      "featured": true,
+      "path": "items/forge/feed-digest/manifest.json",
+      "sha256": "1e2c4a154dcf4672e66a5a17ca9d2fe47fe3bf0e113b89a699a1c3bd88db1318",
+      "size": 6142,
+      "files": [],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.skill.release-notes",
+      "kind": "skill",
+      "slug": "release-notes",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Release notes writer",
+        "pt": "Redator de release notes"
+      },
+      "summary": {
+        "en": "Turns commits and merged PRs into user-facing release notes, grouped by what changed for people.",
+        "pt": "Transforma commits e PRs mesclados em notas de versão para quem usa o produto, agrupadas por impacto."
+      },
+      "tags": [
+        "release",
+        "git",
+        "writing",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "git",
+      "verified": true,
+      "featured": false,
+      "path": "items/skills/release-notes/manifest.json",
+      "sha256": "b8490cf0035ff13666e885097f5d46abf5e522afa3bb18434bc2d809cae893b2",
+      "size": 4640,
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "9d7ac98a928f2fa0af99ab80e594b5b541ba883f3611fbb6f1767e2ffbd49e76",
+          "size": 1567
+        }
+      ],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.extension.focus-sprint",
+      "kind": "extension",
+      "slug": "focus-sprint",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Focus Sprint",
+        "pt": "Focus Sprint"
+      },
+      "summary": {
+        "en": "A calm theme, sprint commands and a coach agent that protects one objective at a time.",
+        "pt": "Um tema calmo, comandos de sprint e um agente que protege um objetivo por vez."
+      },
+      "tags": [
+        "productivity",
+        "team",
+        "local-first",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "timer",
+      "verified": true,
+      "featured": false,
+      "path": "items/extensions/focus-sprint/manifest.json",
+      "sha256": "ad891f13cee593fbcab15f45c268aca75f7467cf87f2156c0975f502d2fb2884",
+      "size": 7172,
+      "files": [],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.app.invoice-studio",
+      "kind": "app",
+      "slug": "invoice-studio",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Invoice Studio",
+        "pt": "Invoice Studio"
+      },
+      "summary": {
+        "en": "Draft invoices with line items, tax and a print-ready PDF — everything stays on this machine.",
+        "pt": "Rascunhe faturas com itens, imposto e PDF pronto para imprimir — tudo fica nesta máquina."
+      },
+      "tags": [
+        "finance",
+        "productivity",
+        "local-first",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "receipt",
+      "verified": true,
+      "featured": false,
+      "path": "items/apps/invoice-studio/manifest.json",
+      "sha256": "a07c92461ec543fba3c55adce56e24bf7de9a0f949ce338999e281cc3ba7b9c4",
+      "size": 4519,
+      "files": [
+        {
+          "path": "app/index.html",
+          "sha256": "020fe646e5bb7c09a29ca67fe164406722ef93ca9abbc589a96658bc6a5eea94",
+          "size": 15724
+        }
+      ],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.app.standup-board",
+      "kind": "app",
+      "slug": "standup-board",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "Standup Board",
+        "pt": "Standup Board"
+      },
+      "summary": {
+        "en": "A local async standup: yesterday, today and blockers, copyable as Markdown.",
+        "pt": "Um standup assíncrono local: ontem, hoje e bloqueios, copiável em Markdown."
+      },
+      "tags": [
+        "team",
+        "productivity",
+        "local-first",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "users",
+      "verified": true,
+      "featured": false,
+      "path": "items/apps/standup-board/manifest.json",
+      "sha256": "11e7607edaffc972530ad98df4dec0260ccf46fe63e4a7866c567ad55b06e833",
+      "size": 4181,
+      "files": [
+        {
+          "path": "app/index.html",
+          "sha256": "05c10f6ce841da85fcc63f2dc69fabfef882141395f608319056c8f862d39c53",
+          "size": 12899
+        }
+      ],
+      "updatedAt": "2026-11-23"
+    },
+    {
+      "id": "raxiomlab.forge.csv-profile",
+      "kind": "forge",
+      "slug": "csv-profile",
+      "version": "1.0.0",
+      "channel": "stable",
+      "name": {
+        "en": "CSV profile",
+        "pt": "Perfil de CSV"
+      },
+      "summary": {
+        "en": "A Forge tool that profiles a local CSV and flags type, null and distribution problems.",
+        "pt": "Uma ferramenta Forge que analisa um CSV local e aponta problemas de tipo, nulos e distribuição."
+      },
+      "tags": [
+        "data",
+        "coding",
+        "local-first",
+        "no-credentials"
+      ],
+      "platforms": [
+        "desktop",
+        "web"
+      ],
+      "publisher": {
+        "id": "raxiomlab",
+        "name": "RaxiomLab",
+        "url": "https://github.com/raxiomlab",
+        "verified": true
+      },
+      "license": "Proprietary-Free-Use",
+      "icon": "table",
+      "verified": true,
+      "featured": false,
+      "path": "items/forge/csv-profile/manifest.json",
+      "sha256": "0e5bac2128703ca9877580811ec1d7c5c2a1914fc2a060c0378681dc4a2798f3",
+      "size": 6146,
+      "files": [],
+      "updatedAt": "2026-11-23"
+    }
+  ]
+}

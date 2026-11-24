@@ -1,0 +1,27 @@
+name: Store catalog
+
+on:
+  push:
+    paths:
+      - "docs/store/**"
+      - "tools/store-build.mjs"
+      - ".github/workflows/store-validate.yml"
+  pull_request:
+    paths:
+      - "docs/store/**"
+      - "tools/store-build.mjs"
+      - ".github/workflows/store-validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate manifests and catalog
+        run: node tools/store-build.mjs --check
