@@ -1,0 +1,14 @@
+# Local agent scratch space (tool outputs may contain unpublished drafts)
+.assistio/
+.playwright-mcp/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Node (store build tooling is dependency-free, but keep it clean)
+node_modules/
+npm-debug.log*

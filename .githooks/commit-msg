@@ -1,0 +1,22 @@
+#!/bin/sh
+# Remove atribuicao de co-autoria de ferramentas de IA (Claude Code e similares)
+# das mensagens de commit. Ativado por: git config core.hooksPath .githooks
+
+msg_file="$1"
+[ -n "$msg_file" ] || exit 0
+[ -f "$msg_file" ] || exit 0
+
+tmp="$msg_file.hooktmp"
+
+sed -E \
+  -e '/^[Cc]o-[Aa]uthored-[Bb]y:.*([Cc]laude|[Aa]nthropic)/d' \
+  -e '/Generated with \[?Claude Code\]?/Id' \
+  "$msg_file" > "$tmp" || exit 0
+
+# remove linhas em branco sobrando no final
+if command -v perl >/dev/null 2>&1; then
+  perl -0pi -e 's/\n+\z/\n/' "$tmp" || true
+fi
+
+mv "$tmp" "$msg_file"
+exit 0
